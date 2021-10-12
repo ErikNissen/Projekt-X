@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.fhkiel.ennj.projektx.projekt_x">
+    package="de.fhkiel.ennj.projektx.projektx">
    <application
-        android:label="projekt_x"
+        android:label="projektx"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
