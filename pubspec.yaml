@@ -38,6 +38,7 @@ dependencies:
   light: ^2.1.0
   flutter_compass: ^0.7.0
   environment_sensors: ^0.2.0
+  http: ^0.13.4
 
 dev_dependencies:
   flutter_test:
