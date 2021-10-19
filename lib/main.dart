@@ -14,6 +14,12 @@ void main() {
   );
 }
 
+/*****************************************************************
+ *
+ *                       Page 1
+ *
+ ****************************************************************** */
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -47,6 +53,12 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
+/*****************************************************************
+*
+*                       Page 2
+*
+****************************************************************** */
 
 class SecondScreen extends StatelessWidget {
   const SecondScreen({Key? key}) : super(key: key);
@@ -85,6 +97,11 @@ ListTile _tile(String title, String subtitle, IconData icon) => ListTile(
   leading: Icon(icon, color: Colors.blue[500]),
 );
 
+/*****************************************************************
+ *
+ *                       Page 3
+ *
+ ****************************************************************** */
 
 class ThirdScreen extends StatelessWidget {
   const ThirdScreen({Key? key}) : super(key: key);
