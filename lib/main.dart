@@ -17,6 +17,7 @@ void main() {
 /*****************************************************************
  *
  *                       Page 1
+ *                      Anmeldung
  *
  ****************************************************************** */
 
@@ -36,10 +37,11 @@ class HomeScreen extends StatelessWidget {
           onPressed: () {
             Navigator.pushNamed(context, '/second');
           },
-          child: Row(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               const Text("Goto Second Screen"),
+
               ElevatedButton(
                 onPressed: () {
                   Navigator.pushNamed(context, '/third');
@@ -57,6 +59,7 @@ class HomeScreen extends StatelessWidget {
 /*****************************************************************
 *
 *                       Page 2
+ *                   Random PW GEN
 *
 ****************************************************************** */
 
@@ -67,15 +70,17 @@ class SecondScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Third Screen'),
+        title: const Text('Secoond Screen'),
       ),
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
+        child: Column(children: [
+          ElevatedButton(
+            onPressed: () {
             Navigator.pushNamed(context, '/');
           },
           child: const Text('Goto home.'),
         ),
+    ],)
       ),
     );
   }
@@ -85,6 +90,7 @@ class SecondScreen extends StatelessWidget {
 /*****************************************************************
  *
  *                       Page 3
+ *      ListView mit Generierten & gespeicherten PW
  *
  ****************************************************************** */
 
@@ -95,7 +101,7 @@ class ThirdScreen extends StatelessWidget {
   Widget build(BuildContext context) {
   return Scaffold(
   appBar: AppBar(
-  title: const Text('Second Screen'),
+  title: const Text('Third Screen'),
   ),
   body: _buildList()
   );
@@ -124,3 +130,13 @@ ListTile _tile(String title, String subtitle, IconData icon) => ListTile(
   subtitle: Text(subtitle),
   leading: Icon(icon, color: Colors.blue[500]),
 );
+
+
+
+/****
+ *
+ * BLAH
+ *
+ **** */
+
+
