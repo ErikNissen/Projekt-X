@@ -66,11 +66,39 @@ class SecondScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Second Screen'),
+      appBar: AppBar(
+        title: const Text('Third Screen'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/');
+          },
+          child: const Text('Goto home.'),
         ),
-        body: _buildList()
+      ),
     );
+  }
+}
+
+
+/*****************************************************************
+ *
+ *                       Page 3
+ *
+ ****************************************************************** */
+
+class ThirdScreen extends StatelessWidget {
+  const ThirdScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+  return Scaffold(
+  appBar: AppBar(
+  title: const Text('Second Screen'),
+  ),
+  body: _buildList()
+  );
   }
 }
 
@@ -96,30 +124,3 @@ ListTile _tile(String title, String subtitle, IconData icon) => ListTile(
   subtitle: Text(subtitle),
   leading: Icon(icon, color: Colors.blue[500]),
 );
-
-/*****************************************************************
- *
- *                       Page 3
- *
- ****************************************************************** */
-
-class ThirdScreen extends StatelessWidget {
-  const ThirdScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Third Screen'),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pushNamed(context, '/');
-          },
-          child: const Text('Goto home.'),
-        ),
-      ),
-    );
-  }
-}
