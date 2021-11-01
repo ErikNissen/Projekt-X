@@ -3,6 +3,7 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'crypto.dart' as crypto;
 
 void main() {
   runApp(
@@ -72,7 +73,6 @@ class SecondScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double _pwlen = 8;
     String _verSym = "";
     String _sym = """
     ABCDEFGHIJKLMNOPQRSTUVWXYZ
@@ -89,24 +89,42 @@ class SecondScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Row(
-            children: [
-              Text("Länge: $_pwlen"),
-              Column(
-                children: [
-                  pwlenSlider()
-                ],
-              )
-            ],
-          )
+          pwlenSlider(),
         ],
       ),
     );
   }
-
-
-
 }
+
+class PWText extends StatefulWidget {
+  @override
+  _PWText createState() => _PWText();
+}
+
+class _PWText extends State<PWText> {
+  String _pw = "";
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(_pw),
+        IconButton(
+          icon: Icon(Icons.copy),
+          onPressed: () {
+            setState(() async {
+              _pw = await crypto.Gen_Password(crypto.data());
+            });
+            Clipboard.setData(
+              ClipboardData(text: _pw)
+            );
+          },
+        )
+      ],
+    );
+  }
+}
+
 class pwlenSlider extends StatefulWidget{
   @override
   _pwlenSlider createState() => _pwlenSlider();
@@ -117,17 +135,22 @@ class _pwlenSlider extends State<pwlenSlider> {
 
   @override
   Widget build(BuildContext context) {
-    return Slider(
-      value: _pwlen,
-      min: 8,
-      max: 512,
-      divisions: 512-8,
-      label: _pwlen.toString(),
-      onChanged: (double value){
-        setState(() {
-          _pwlen = value;
-        });
-      },
+    return Row(
+      children: [
+        Text("Länge: ${_pwlen.round()}"),
+        Slider(
+          value: _pwlen,
+          min: 8,
+          max: 512,
+          divisions: 512-8,
+          label: _pwlen.toString(),
+          onChanged: (double value){
+            setState(() {
+              _pwlen = value;
+            });
+          },
+        )
+      ],
     );
   }
 }
