@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:html';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(
@@ -68,24 +72,65 @@ class SecondScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double _pwlen = 8;
+    String _verSym = "";
+    String _sym = """
+    ABCDEFGHIJKLMNOPQRSTUVWXYZ
+    abcdefghijklmnopqrstuvwxyz
+    0123456789
+    !\\"§\$%&/()=?*'<>;,:.-_+#~@{[]}´`|°^
+    €‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ¡¢£¤¥¦§¨©ª«¬®¯±²³µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ
+    """.replaceAll("\n", "").replaceAll(" ", "");
+    final String _erlSym = _sym.replaceAll(_verSym, "");
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Secoond Screen'),
+        title: const Text("Passwort Generator"),
       ),
-      body: Center(
-        child: Column(children: [
-          ElevatedButton(
-            onPressed: () {
-            Navigator.pushNamed(context, '/');
-          },
-          child: const Text('Goto home.'),
-        ),
-    ],)
+      body: Column(
+        children: [
+          Row(
+            children: [
+              Text("Länge: $_pwlen"),
+              Column(
+                children: [
+                  pwlenSlider()
+                ],
+              )
+            ],
+          )
+        ],
       ),
     );
   }
+
+
+
+}
+class pwlenSlider extends StatefulWidget{
+  @override
+  _pwlenSlider createState() => _pwlenSlider();
 }
 
+class _pwlenSlider extends State<pwlenSlider> {
+  double _pwlen = 8;
+
+  @override
+  Widget build(BuildContext context) {
+    return Slider(
+      value: _pwlen,
+      min: 8,
+      max: 512,
+      divisions: 512-8,
+      label: _pwlen.toString(),
+      onChanged: (double value){
+        setState(() {
+          _pwlen = value;
+        });
+      },
+    );
+  }
+}
 
 /*****************************************************************
  *
