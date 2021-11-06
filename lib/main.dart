@@ -73,15 +73,6 @@ class SecondScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String _verSym = "";
-    String _sym = """
-    ABCDEFGHIJKLMNOPQRSTUVWXYZ
-    abcdefghijklmnopqrstuvwxyz
-    0123456789
-    !\\"§\$%&/()=?*'<>;,:.-_+#~@{[]}´`|°^
-    €‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ¡¢£¤¥¦§¨©ª«¬®¯±²³µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ
-    """.replaceAll("\n", "").replaceAll(" ", "");
-    final String _erlSym = _sym.replaceAll(_verSym, "");
 
     return Scaffold(
       appBar: AppBar(
@@ -89,7 +80,13 @@ class SecondScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          pwlenSlider(),
+          Row(
+            children: [
+              pwlenSlider(),
+
+            ],
+          ),
+          pwOptions()
         ],
       ),
     );
@@ -103,23 +100,28 @@ class PWText extends StatefulWidget {
 
 class _PWText extends State<PWText> {
   String _pw = "";
+  String _verSym = "";
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       children: [
-        Text(_pw),
-        IconButton(
-          icon: Icon(Icons.copy),
-          onPressed: () {
-            setState(() async {
-              _pw = await crypto.Gen_Password(crypto.data());
-            });
-            Clipboard.setData(
-              ClipboardData(text: _pw)
-            );
-          },
-        )
+        Row(
+          children: [
+            Text(_pw),
+            IconButton(
+              icon: const Icon(Icons.copy),
+              onPressed: () {
+                setState(() async {
+                  _pw = await crypto.Gen_Password(crypto.data(), _verSym);
+                });
+                Clipboard.setData(
+                  ClipboardData(text: _pw)
+                );
+              },
+            ),
+          ],
+        ),
       ],
     );
   }
@@ -135,20 +137,121 @@ class _pwlenSlider extends State<pwlenSlider> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       children: [
-        Text("Länge: ${_pwlen.round()}"),
-        Slider(
-          value: _pwlen,
-          min: 8,
-          max: 512,
-          divisions: 512-8,
-          label: _pwlen.toString(),
-          onChanged: (double value){
-            setState(() {
-              _pwlen = value;
-            });
-          },
+        Row(
+          children: [
+            Text("Länge: ${_pwlen.round()}"),
+            Slider(
+              value: _pwlen,
+              min: 8,
+              max: 512,
+              divisions: 512-8,
+              label: _pwlen.toString(),
+              onChanged: (double value){
+                setState(() {
+                  _pwlen = value;
+                });
+              },
+            )
+          ],
+        ),
+
+      ],
+    );
+  }
+}
+
+class pwOptions extends StatefulWidget{
+  @override
+  _pwOptions createState() => _pwOptions();
+}
+
+class _pwOptions extends State<pwOptions> {
+  bool UC = true;
+  bool LC = true;
+  bool num = true;
+  bool sym = true;
+  bool erwASCII = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Switch(
+              value: UC,
+              onChanged: (value) {
+                setState(() {
+                  UC = value;
+                });
+              },
+              activeTrackColor: Colors.lightGreenAccent,
+              activeColor: Colors.green,
+            ),
+            const Text("Großbuchstaben")
+          ],
+        ),
+        Row(
+          children: [
+            Switch(
+              value: LC,
+              onChanged: (value) {
+                setState(() {
+                  LC = value;
+                });
+              },
+              activeTrackColor: Colors.lightGreenAccent,
+              activeColor: Colors.green,
+            ),
+            const Text("Kleinbuchstaben")
+          ],
+        ),
+        Row(
+          children: [
+            Switch(
+              value: num,
+              onChanged: (value) {
+                setState(() {
+                  num = value;
+                });
+              },
+              activeTrackColor: Colors.lightGreenAccent,
+              activeColor: Colors.green,
+            ),
+            const Text("Zahlen")
+          ],
+        ),
+        Row(
+          children: [
+            Switch(
+              value: sym,
+              onChanged: (value) {
+                setState(() {
+                  sym = value;
+                });
+              },
+              activeTrackColor: Colors.lightGreenAccent,
+              activeColor: Colors.green,
+            ),
+            const Text("Symbole")
+          ],
+        ),
+        Row(
+          children: [
+            Switch(
+              value: erwASCII,
+              onChanged: (value) {
+                setState(() {
+                  erwASCII = value;
+                });
+              },
+              activeTrackColor: Colors.lightGreenAccent,
+              activeColor: Colors.green,
+            ),
+            const Text("Erw. ASCII")
+          ],
         )
       ],
     );
