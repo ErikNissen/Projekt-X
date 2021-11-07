@@ -80,51 +80,23 @@ class SecondScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Row(
-            children: [
-              pwlenSlider(),
-
-            ],
-          ),
-          pwOptions()
+          pwlenSlider(),
+          pwOptions(),
+          GenPwd()
         ],
       ),
     );
   }
 }
 
-class PWText extends StatefulWidget {
-  @override
-  _PWText createState() => _PWText();
-}
-
-class _PWText extends State<PWText> {
-  String _pw = "";
-  String _verSym = "";
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Text(_pw),
-            IconButton(
-              icon: const Icon(Icons.copy),
-              onPressed: () {
-                setState(() async {
-                  _pw = await crypto.Gen_Password(crypto.data(), _verSym);
-                });
-                Clipboard.setData(
-                  ClipboardData(text: _pw)
-                );
-              },
-            ),
-          ],
-        ),
-      ],
-    );
-  }
+class Variables {
+  String pwd = "";
+  bool UC = true;
+  bool LC = true;
+  bool num = true;
+  bool sym = true;
+  bool erwASCII = false;
+  double pwlen = 8;
 }
 
 class pwlenSlider extends StatefulWidget{
@@ -133,7 +105,7 @@ class pwlenSlider extends StatefulWidget{
 }
 
 class _pwlenSlider extends State<pwlenSlider> {
-  double _pwlen = 8;
+
 
   @override
   Widget build(BuildContext context) {
@@ -141,16 +113,16 @@ class _pwlenSlider extends State<pwlenSlider> {
       children: [
         Row(
           children: [
-            Text("Länge: ${_pwlen.round()}"),
+            Text("Länge: ${Variables().pwlen.round()}"),
             Slider(
-              value: _pwlen,
+              value: Variables().pwlen,
               min: 8,
               max: 512,
               divisions: 512-8,
-              label: _pwlen.toString(),
+              label: Variables().pwlen.toString(),
               onChanged: (double value){
                 setState(() {
-                  _pwlen = value;
+                  Variables().pwlen = value;
                 });
               },
             )
@@ -168,11 +140,6 @@ class pwOptions extends StatefulWidget{
 }
 
 class _pwOptions extends State<pwOptions> {
-  bool UC = true;
-  bool LC = true;
-  bool num = true;
-  bool sym = true;
-  bool erwASCII = false;
 
   @override
   Widget build(BuildContext context) {
@@ -181,10 +148,10 @@ class _pwOptions extends State<pwOptions> {
         Row(
           children: [
             Switch(
-              value: UC,
+              value: Variables().UC,
               onChanged: (value) {
                 setState(() {
-                  UC = value;
+                  Variables().UC = value;
                 });
               },
               activeTrackColor: Colors.lightGreenAccent,
@@ -196,10 +163,10 @@ class _pwOptions extends State<pwOptions> {
         Row(
           children: [
             Switch(
-              value: LC,
+              value: Variables().LC,
               onChanged: (value) {
                 setState(() {
-                  LC = value;
+                  Variables().LC = value;
                 });
               },
               activeTrackColor: Colors.lightGreenAccent,
@@ -211,10 +178,10 @@ class _pwOptions extends State<pwOptions> {
         Row(
           children: [
             Switch(
-              value: num,
+              value: Variables().num,
               onChanged: (value) {
                 setState(() {
-                  num = value;
+                  Variables().num = value;
                 });
               },
               activeTrackColor: Colors.lightGreenAccent,
@@ -226,10 +193,10 @@ class _pwOptions extends State<pwOptions> {
         Row(
           children: [
             Switch(
-              value: sym,
+              value: Variables().sym,
               onChanged: (value) {
                 setState(() {
-                  sym = value;
+                  Variables().sym = value;
                 });
               },
               activeTrackColor: Colors.lightGreenAccent,
@@ -241,10 +208,10 @@ class _pwOptions extends State<pwOptions> {
         Row(
           children: [
             Switch(
-              value: erwASCII,
+              value: Variables().erwASCII,
               onChanged: (value) {
                 setState(() {
-                  erwASCII = value;
+                  Variables().erwASCII = value;
                 });
               },
               activeTrackColor: Colors.lightGreenAccent,
@@ -254,6 +221,78 @@ class _pwOptions extends State<pwOptions> {
           ],
         )
       ],
+    );
+  }
+}
+
+class GenPwd extends StatefulWidget{
+  @override
+  _pwgen createState() => _pwgen();
+}
+
+class _pwgen extends State<GenPwd> {
+  updatepwd(){
+    pwd = Variables().pwd;
+  }
+  String pwd = "";
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TextButton(
+          style: ButtonStyle(
+            foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+          ),
+          onPressed: () async {
+            Variables().pwd = crypto.Gen_Password(crypto.data(), [Variables().UC, Variables().LC, Variables().num, Variables().sym, Variables().erwASCII], Variables().pwlen);
+            setState(() {
+              updatepwd();
+            });
+          },
+          child: const Text("Generiere Passwort"),
+        ),
+        SizedBox(
+          width: 200,
+          child: Text(
+            pwd,
+            overflow: TextOverflow.clip,
+            softWrap: true,
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class UpdateText extends StatefulWidget {
+
+  UpdateTextState createState() => UpdateTextState();
+
+}
+
+class UpdateTextState extends State {
+
+  String textHolder = "";
+
+  changeText() {
+
+    setState(() {
+      textHolder = Variables().pwd;
+    });
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Center(child: Column(
+            children: <Widget>[
+              Container(
+                  padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+                  child: Text('$textHolder',
+                      style: TextStyle(fontSize: 21))),
+            ]))
     );
   }
 }

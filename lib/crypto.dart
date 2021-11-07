@@ -16,18 +16,24 @@ Uri Qrand(int length){
   );
 }
 
-Future<Map<String, dynamic>> data() async{
+Map<String, dynamic> data(){
   late double? direction;
   final envSen = EnvironmentSensors();
   late double? temp;
   int? lightlvl;
-
+  late bool x;
+  envSen.getSensorAvailable(SensorType.AmbientTemperature).then(
+      (value) {
+        if(value == true){
+          envSen.temperature.listen((temperature) {
+            temp = temperature;
+          });
+        }else{
+          temp = 0.0;
+        }
+      }
+  );
   //Get Sensor Infos
-  if(await envSen.getSensorAvailable(SensorType.AmbientTemperature)){
-    envSen.temperature.listen((temperature) {
-      temp = temperature;
-    });
-  }
   var _light = new Light();
   try{
     var _sub = _light.lightSensorStream.listen((val){lightlvl = val;});
@@ -41,8 +47,7 @@ Future<Map<String, dynamic>> data() async{
   };
 }
 
-Future<String> Gen_Password(Future<Map<String, dynamic>> Data, String verbotene_symbole) async {
-  var data = await Data;
+String Gen_Password(Map<String, dynamic> data, List verbotene_symbole, double pwlen) {
   assert(data.isNotEmpty);
   assert(data.containsKey("temperature"));
   assert(data.containsKey("light_lvl"));
@@ -61,6 +66,22 @@ Future<String> Gen_Password(Future<Map<String, dynamic>> Data, String verbotene_
   while(data['light_lvl'].length < 21){
     data['light_lvl'] = "${data['light_lvl']}${Random().nextBool()=='true'?1:0}";
   }
+  String verbotene_symbole = "";
+  if(verbotene_symbole[0] == true){
+    verbotene_symbole = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  }
+  if(verbotene_symbole[1] == true){
+    verbotene_symbole = "${verbotene_symbole}abcdefghijklmnopqrstuvwxyz";
+  }
+  if(verbotene_symbole[2] == true){
+    verbotene_symbole = "${verbotene_symbole}0123456789";
+  }
+  if(verbotene_symbole[3] == true){
+    verbotene_symbole = """${verbotene_symbole}!\\"§\$%&/()=?*'<>;,:.-_+#~@{[]}´`|°^""";
+  }
+  if(verbotene_symbole[4] == true){
+    verbotene_symbole = "${verbotene_symbole}€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ¡¢£¤¥¦§¨©ª«¬®¯±²³µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ";
+  }
 
   var _symL = """
     ABCDEFGHIJKLMNOPQRSTUVWXYZ
@@ -78,7 +99,8 @@ Future<String> Gen_Password(Future<Map<String, dynamic>> Data, String verbotene_
     _erlSym = "$_erlSym${_erlSym.split("")[Random().nextInt(_erlSym.length + 1)]}";
   }
 
-  var _qrand = await http.get(Qrand(255));
+  var _qrand;
+  http.get(Qrand(255)).then((value) => _qrand = value);
   final Map _qrandD = json.decode(_qrand.body);
   var _numbers = _qrandD["data"];
 
@@ -88,5 +110,5 @@ Future<String> Gen_Password(Future<Map<String, dynamic>> Data, String verbotene_
     _pwd = "$_pwd${_erlSym.split("")[_num]}";
   }
 
-  return _pwd;
+  return _pwd.substring(0, pwlen.toInt());
 }
