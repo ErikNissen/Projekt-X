@@ -1,8 +1,4 @@
-import 'dart:convert';
-import 'dart:html';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'crypto.dart' as crypto;
 
 void main() {
@@ -245,7 +241,7 @@ class _pwgen extends State<GenPwd> {
             foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
           ),
           onPressed: () async {
-            Variables().pwd = crypto.Gen_Password(crypto.data(), [Variables().UC, Variables().LC, Variables().num, Variables().sym, Variables().erwASCII], Variables().pwlen);
+            Variables().pwd = crypto.Gen_Password([Variables().UC, Variables().LC, Variables().num, Variables().sym, Variables().erwASCII], Variables().pwlen);
             setState(() {
               updatepwd();
             });

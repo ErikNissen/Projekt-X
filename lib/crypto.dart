@@ -16,10 +16,9 @@ Uri Qrand(int length){
   );
 }
 
-Map<String, dynamic> data(){
-  late double? direction;
+Map data(){
   final envSen = EnvironmentSensors();
-  late double? temp;
+  double temp = 0.0;
   int? lightlvl;
   late bool x;
   envSen.getSensorAvailable(SensorType.AmbientTemperature).then(
@@ -28,8 +27,6 @@ Map<String, dynamic> data(){
           envSen.temperature.listen((temperature) {
             temp = temperature;
           });
-        }else{
-          temp = 0.0;
         }
       }
   );
@@ -42,29 +39,25 @@ Map<String, dynamic> data(){
   }
 
   return {
-    'temperature': temp ?? 0.00,
+    'temperature': temp,
     'light_lvl': lightlvl ?? 0.00
   };
 }
 
-String Gen_Password(Map<String, dynamic> data, List verbotene_symbole, double pwlen) {
-  assert(data.isNotEmpty);
-  assert(data.containsKey("temperature"));
-  assert(data.containsKey("light_lvl"));
-  assert(data["light_lvl"].runtimeType == double);
-  assert(data["temperature"].runtimeType == double);
+String Gen_Password(List verbotene_symbole, double pwlen) {
+  Map Data = data();
   
-  int temperature = double.parse(data["temperature"]).round();
-  int light_lvl = double.parse(data["light_lvl"]).round();
-  data = {
+  int temperature = double.parse(Data["temperature"]).round();
+  int light_lvl = double.parse(Data["light_lvl"]).round();
+  Data = {
     'temperature': int.parse(temperature.toString(), radix: 2).toString(),
     'light_lvl': int.parse(light_lvl.toString(), radix: 2).toString()
   };
-  while(data['temperature'].length < 21){
-    data['temperature'] = "${data['temperature']}${Random().nextBool()=='true'?1:0}";
+  while(Data['temperature'].length < 21){
+    Data['temperature'] = "${Data['temperature']}${Random().nextBool()=='true'?1:0}";
   }
-  while(data['light_lvl'].length < 21){
-    data['light_lvl'] = "${data['light_lvl']}${Random().nextBool()=='true'?1:0}";
+  while(Data['light_lvl'].length < 21){
+    Data['light_lvl'] = "${Data['light_lvl']}${Random().nextBool()=='true'?1:0}";
   }
   String verbotene_symbole = "";
   if(verbotene_symbole[0] == true){
@@ -89,7 +82,7 @@ String Gen_Password(Map<String, dynamic> data, List verbotene_symbole, double pw
     0123456789
     !\\"§\$%&/()=?*'<>;,:.-_+#~@{[]}´`|°^
     €‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ¡¢£¤¥¦§¨©ª«¬®¯±²³µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ
-    ${data['temperature'].toString()}${data['light_lvl'].toString()}
+    ${Data['temperature'].toString()}${Data['light_lvl'].toString()}
     """.replaceAll("\n", "").replaceAll(" ", "").split("");
   _symL.shuffle();
   String _sym = _symL.join("");
