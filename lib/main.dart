@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'crypto.dart' as crypto;
+import 'firebase.dart' as firebase;
 
 List _pwd = [];
 bool _UC = true;
@@ -15,7 +16,7 @@ void main() {
       title: "Flutter ProjektX",
       initialRoute: '/',
       routes: {
-        '/': (context) => const HomeScreen(),
+        '/': (context) => firebase.LoginPage(),
         '/second': (context) => const SecondScreen(),
         '/third': (context) => const ThirdScreen(),
       },
