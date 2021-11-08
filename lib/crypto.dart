@@ -75,8 +75,6 @@ Future<List> Gen_Password(List verbotene_symbole, double pwlen) async {
     entropy_R += versym.length;
   }
 
-  print("Verbotene Symbole: $versym");
-
   var _symL = """
     ABCDEFGHIJKLMNOPQRSTUVWXYZ
     abcdefghijklmnopqrstuvwxyz
@@ -93,11 +91,9 @@ Future<List> Gen_Password(List verbotene_symbole, double pwlen) async {
     _erlSym = _erlSym.replaceAll(versym.split("")[j], "");
   }
 
-  print("Alt: $_erlSym");
     while(_erlSym.length <= 255){
       _erlSym += _erlSym.split("").join("").toString();
     }
-  print("Neu: $_erlSym");
   var _qrand = (await http.get(Uri.parse(Qrand(pwlen.toInt()>255?pwlen.toInt():255)))).body;
   final Map _qrandD = json.decode(_qrand);
   var _numbers = _qrandD["data"];
@@ -105,29 +101,10 @@ Future<List> Gen_Password(List verbotene_symbole, double pwlen) async {
   String _pwd = "";
   if(pwlen.toInt() > _erlSym.length){
     _erlSym *= pwlen.toInt() ~/ 255;
-    print(_erlSym.length);
   }
   for(var _num in _numbers){
     _pwd = "$_pwd${_erlSym.split("")[_num]}";
   }
-  print("Entropy_R: $entropy_R");
-  var entropy, pw = 1.0;
-  int d = 0;
-  for(int i = 1; i < 101; i++){
-    while((pow(entropy_R,pwlen) * pw) >= 1.7*pow(10,38)){
-      if(pw < 1.7*pow(10,38)){
-        break;
-      }else{
-        pw /= 2;
-      }
-    }
-    pw = pow(entropy_R,pwlen/100) * pw;
-  }
-  print(pw);
-  while((log(pw/d)).isInfinite && ((log(pw/d)).isNaN)){
-    d += 1;
-    print(d);
-  }
-  entropy = log(pw/d);
-  return [_pwd.substring(0, pwlen.toInt()), "${entropy~/1}"];
+  var entropy = log(entropy_R) * pwlen;
+  return [_pwd.substring(0, pwlen.toInt()), (entropy~/1)];
 }
