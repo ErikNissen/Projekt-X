@@ -78,18 +78,19 @@ class SecondScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Passwort Generator"),
-      ),
-      body: Column(
-        children: [
-          pwlenSlider(),
-          pwOptions(),
-          GenPwd()
-        ],
-      ),
+        appBar: AppBar(
+          title: const Text("Passwort Generator"),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              pwlenSlider(),
+              pwOptions(),
+              GenPwd()
+            ],
+          ),
+        )
     );
   }
 }
