@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 import 'crypto.dart' as crypto;
 
+List _pwd = [];
+bool _UC = true;
+bool _LC = true;
+bool _num = true;
+bool _sym = true;
+bool _erwASCII = false;
+double _pwlen = 8;
+
 void main() {
   runApp(
     MaterialApp(
@@ -85,16 +93,6 @@ class SecondScreen extends StatelessWidget {
   }
 }
 
-class Variables {
-  String pwd = "";
-  bool UC = true;
-  bool LC = true;
-  bool num = true;
-  bool sym = true;
-  bool erwASCII = false;
-  double pwlen = 8;
-}
-
 class pwlenSlider extends StatefulWidget{
   @override
   _pwlenSlider createState() => _pwlenSlider();
@@ -102,23 +100,22 @@ class pwlenSlider extends StatefulWidget{
 
 class _pwlenSlider extends State<pwlenSlider> {
 
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Row(
           children: [
-            Text("Länge: ${Variables().pwlen.round()}"),
+            Text("Länge: ${_pwlen.round()}"),
             Slider(
-              value: Variables().pwlen,
+              value: _pwlen,
               min: 8,
               max: 512,
               divisions: 512-8,
-              label: Variables().pwlen.toString(),
+              label: _pwlen.toString(),
               onChanged: (double value){
                 setState(() {
-                  Variables().pwlen = value;
+                  _pwlen = value;
                 });
               },
             )
@@ -144,10 +141,10 @@ class _pwOptions extends State<pwOptions> {
         Row(
           children: [
             Switch(
-              value: Variables().UC,
+              value: _UC,
               onChanged: (value) {
                 setState(() {
-                  Variables().UC = value;
+                  _UC = value;
                 });
               },
               activeTrackColor: Colors.lightGreenAccent,
@@ -159,10 +156,10 @@ class _pwOptions extends State<pwOptions> {
         Row(
           children: [
             Switch(
-              value: Variables().LC,
+              value: _LC,
               onChanged: (value) {
                 setState(() {
-                  Variables().LC = value;
+                  _LC = value;
                 });
               },
               activeTrackColor: Colors.lightGreenAccent,
@@ -174,10 +171,10 @@ class _pwOptions extends State<pwOptions> {
         Row(
           children: [
             Switch(
-              value: Variables().num,
+              value: _num,
               onChanged: (value) {
                 setState(() {
-                  Variables().num = value;
+                  _num = value;
                 });
               },
               activeTrackColor: Colors.lightGreenAccent,
@@ -189,10 +186,10 @@ class _pwOptions extends State<pwOptions> {
         Row(
           children: [
             Switch(
-              value: Variables().sym,
+              value: _sym,
               onChanged: (value) {
                 setState(() {
-                  Variables().sym = value;
+                  _sym = value;
                 });
               },
               activeTrackColor: Colors.lightGreenAccent,
@@ -204,10 +201,10 @@ class _pwOptions extends State<pwOptions> {
         Row(
           children: [
             Switch(
-              value: Variables().erwASCII,
+              value: _erwASCII,
               onChanged: (value) {
                 setState(() {
-                  Variables().erwASCII = value;
+                  _erwASCII = value;
                 });
               },
               activeTrackColor: Colors.lightGreenAccent,
@@ -228,9 +225,11 @@ class GenPwd extends StatefulWidget{
 
 class _pwgen extends State<GenPwd> {
   updatepwd(){
-    pwd = Variables().pwd;
+    pwd = _pwd[0];
+    entropy = _pwd[1];
   }
   String pwd = "";
+  var entropy;
 
   @override
   Widget build(BuildContext context) {
@@ -241,7 +240,7 @@ class _pwgen extends State<GenPwd> {
             foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
           ),
           onPressed: () async {
-            Variables().pwd = crypto.Gen_Password([Variables().UC, Variables().LC, Variables().num, Variables().sym, Variables().erwASCII], Variables().pwlen);
+            _pwd = await crypto.Gen_Password([_UC, _LC, _num, _sym, _erwASCII], _pwlen);
             setState(() {
               updatepwd();
             });
@@ -250,11 +249,22 @@ class _pwgen extends State<GenPwd> {
         ),
         SizedBox(
           width: 200,
-          child: Text(
-            pwd,
-            overflow: TextOverflow.clip,
-            softWrap: true,
-          ),
+          child: Column(
+            children: [
+              Container(
+                height: 200,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Text(
+                    pwd,
+                    overflow: TextOverflow.clip,
+                    softWrap: true,
+                  ),
+                ),
+              ),
+              Text("Entropie: $entropy")
+            ],
+          )
         )
       ],
     );
@@ -274,7 +284,7 @@ class UpdateTextState extends State {
   changeText() {
 
     setState(() {
-      textHolder = Variables().pwd;
+      textHolder = _pwd[0];
     });
 
   }
