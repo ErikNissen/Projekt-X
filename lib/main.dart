@@ -226,32 +226,46 @@ class GenPwd extends StatefulWidget{
 class _pwgen extends State<GenPwd> {
   updatepwd(){
     pwd = _pwd[0];
-    entropy = _pwd[1];
   }
   String pwd = "";
-  var entropy;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TextButton(
-          style: ButtonStyle(
-            foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-          ),
-          onPressed: () async {
-            _pwd = await crypto.Gen_Password([_UC, _LC, _num, _sym, _erwASCII], _pwlen);
-            setState(() {
-              updatepwd();
-            });
-          },
-          child: const Text("Generiere Passwort"),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextButton(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+              ),
+              onPressed: () async {
+                _pwd = await crypto.Gen_Password([_UC, _LC, _num, _sym, _erwASCII], _pwlen);
+                setState(() {
+                  updatepwd();
+                });
+              },
+              child: const Text("Generiere Passwort"),
+            ),
+            TextButton(
+              style: ButtonStyle(
+                foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+              ),
+              onPressed: (){
+                setState(() {
+
+                });
+              },
+              child: const Text("Speichern"),
+            )
+          ],
         ),
         SizedBox(
-          width: 200,
+          width: 150,
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 height: 200,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
@@ -262,7 +276,6 @@ class _pwgen extends State<GenPwd> {
                   ),
                 ),
               ),
-              Text("Entropie: $entropy")
             ],
           )
         )

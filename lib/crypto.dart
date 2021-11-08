@@ -106,5 +106,5 @@ Future<List> Gen_Password(List verbotene_symbole, double pwlen) async {
     _pwd = "$_pwd${_erlSym.split("")[_num]}";
   }
   var entropy = log(entropy_R) * pwlen;
-  return [_pwd.substring(0, pwlen.toInt()), (entropy~/1)];
+  return [_pwd.substring(0, pwlen.toInt())];
 }
