@@ -41,7 +41,7 @@ class HomeScreen extends StatelessWidget {
         title: const Text('Home Screen'),
       ),
       body: Container(
-        decoration: BoxDecoration(color: Colors.grey),
+        decoration: const BoxDecoration(color: Colors.grey),
         padding: const EdgeInsets.all(20),
         child: ElevatedButton(
           onPressed: () {
@@ -152,7 +152,22 @@ class _pwOptions extends State<pwOptions> {
               activeTrackColor: Colors.lightGreenAccent,
               activeColor: Colors.green,
             ),
-            const Text("Großbuchstaben")
+            Tooltip(
+              message: 'Alle Großbuchstaben des Alphabets (ohne Umlaute).',
+              child: const Text("Großbuchstaben"),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                gradient: const LinearGradient(colors: <Color>[Colors.blue, Colors.lightBlue]),
+              ),
+              height: 20,
+              padding: const EdgeInsets.all(8),
+              preferBelow: false,
+              textStyle: const TextStyle(
+                fontSize: 12,
+              ),
+              showDuration: const Duration(seconds: 2),
+              waitDuration: const Duration(seconds: 1),
+            )
           ],
         ),
         Row(
@@ -167,7 +182,22 @@ class _pwOptions extends State<pwOptions> {
               activeTrackColor: Colors.lightGreenAccent,
               activeColor: Colors.green,
             ),
-            const Text("Kleinbuchstaben")
+            Tooltip(
+              message: 'Alle Kleinbuchstaben des Alphabets (ohne Umlaute).',
+              child: const Text("Kleinbuchstaben"),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                gradient: const LinearGradient(colors: <Color>[Colors.blue, Colors.lightBlue]),
+              ),
+              height: 20,
+              padding: const EdgeInsets.all(8),
+              preferBelow: false,
+              textStyle: const TextStyle(
+                fontSize: 12,
+              ),
+              showDuration: const Duration(seconds: 2),
+              waitDuration: const Duration(seconds: 1),
+            )
           ],
         ),
         Row(
@@ -182,7 +212,22 @@ class _pwOptions extends State<pwOptions> {
               activeTrackColor: Colors.lightGreenAccent,
               activeColor: Colors.green,
             ),
-            const Text("Zahlen")
+            Tooltip(
+              message: 'Zahlen von 0-9.',
+              child: const Text("Zahlen"),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                gradient: const LinearGradient(colors: <Color>[Colors.blue, Colors.lightBlue]),
+              ),
+              height: 20,
+              padding: const EdgeInsets.all(8),
+              preferBelow: false,
+              textStyle: const TextStyle(
+                fontSize: 12,
+              ),
+              showDuration: const Duration(seconds: 2),
+              waitDuration: const Duration(seconds: 1),
+            )
           ],
         ),
         Row(
@@ -197,7 +242,22 @@ class _pwOptions extends State<pwOptions> {
               activeTrackColor: Colors.lightGreenAccent,
               activeColor: Colors.green,
             ),
-            const Text("Symbole")
+            Tooltip(
+              message: """!\\"§\$%&/()=?*'<>;,:.-_+#~@{[]}´`|°^""",
+              child: const Text("Symbole"),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                gradient: const LinearGradient(colors: <Color>[Colors.blue, Colors.lightBlue]),
+              ),
+              height: 20,
+              padding: const EdgeInsets.all(8),
+              preferBelow: false,
+              textStyle: const TextStyle(
+                fontSize: 12,
+              ),
+              showDuration: const Duration(seconds: 2),
+              waitDuration: const Duration(seconds: 1),
+            )
           ],
         ),
         Row(
@@ -212,7 +272,22 @@ class _pwOptions extends State<pwOptions> {
               activeTrackColor: Colors.lightGreenAccent,
               activeColor: Colors.green,
             ),
-            const Text("Erw. ASCII")
+            Tooltip(
+              message: '€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—\n˜™š›œžŸ¡¢£¤¥¦§¨©ª«¬®\n¯±²³µ¶·¸¹º»¼½¾¿ÀÁÂÃÄ\nÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×Ø\nÙÚÛÜÝÞßàáâãäåæçèéêëì\níîïðñòóôõö÷øùúûüýþÿ',
+              child: const Text("Erw. ASCII"),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                gradient: const LinearGradient(colors: <Color>[Colors.blue, Colors.lightBlue]),
+              ),
+              height: 20,
+              padding: const EdgeInsets.all(8),
+              preferBelow: false,
+              textStyle: const TextStyle(
+                fontSize: 12,
+              ),
+              showDuration: const Duration(seconds: 2),
+              waitDuration: const Duration(seconds: 1),
+            )
           ],
         )
       ],
@@ -226,6 +301,13 @@ class GenPwd extends StatefulWidget{
 }
 
 class _pwgen extends State<GenPwd> {
+  bool _isLoading = false;
+
+  void _Loading() async {
+    setState(() {
+      _isLoading = !_isLoading;
+    });
+  }
   updatepwd(){
     pwd = _pwd[0];
   }
@@ -238,15 +320,17 @@ class _pwgen extends State<GenPwd> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextButton(
+            _isLoading? const CircularProgressIndicator() : TextButton(
               style: ButtonStyle(
                 foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
               ),
               onPressed: () async {
+                _Loading();
                 _pwd = await crypto.Gen_Password([_UC, _LC, _num, _sym, _erwASCII], _pwlen);
                 setState(() {
                   updatepwd();
                 });
+                _Loading();
               },
               child: const Text("Generiere Passwort"),
             ),
@@ -256,7 +340,7 @@ class _pwgen extends State<GenPwd> {
               ),
               onPressed: (){
                 setState(() {
-
+                  //Speicher Passwort in der DB
                 });
               },
               child: const Text("Speichern"),
@@ -293,7 +377,6 @@ class UpdateText extends StatefulWidget {
 }
 
 class UpdateTextState extends State {
-
   String textHolder = "";
 
   changeText() {
@@ -310,9 +393,9 @@ class UpdateTextState extends State {
         body: Center(child: Column(
             children: <Widget>[
               Container(
-                  padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-                  child: Text('$textHolder',
-                      style: TextStyle(fontSize: 21))),
+                  padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                  child: Text(textHolder,
+                      style: const TextStyle(fontSize: 21))),
             ]))
     );
   }

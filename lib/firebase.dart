@@ -110,17 +110,17 @@ class DatenbankView extends StatelessWidget {
           child: Column(
             children: [
               Row(
-                children: [
+                children: const [
                   Text("Notiz"),
                   Text("Passwort")
                 ],
               ),
               ListView.builder(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 itemExtent: 20.0,
                 itemBuilder: (BuildContext context, int index){
                   return Row(
-                    children: [
+                    children: const [
                       Text("")
                     ],
                   );
