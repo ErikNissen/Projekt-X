@@ -17,11 +17,11 @@ String _encpass(String password) {
   return sha512.convert(_bytes).toString();
 }
 
-class LoginPage extends StatefulWidget {
+/*Fertig*/class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
-class _LoginPageState extends State<LoginPage> {
+/*Fertig*/class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final logo = Padding(
@@ -131,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-class ForgotPassword extends StatelessWidget {
+/*TODO: Style*/class ForgotPassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -198,11 +198,11 @@ class ForgotPassword extends StatelessWidget {
   }
 }
 
-class RegisterPage extends StatefulWidget{
+/*TODO: Style*/class RegisterPage extends StatefulWidget{
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
-class _RegisterPageState extends State<RegisterPage>{
+/*TODO: Style*/class _RegisterPageState extends State<RegisterPage>{
   @override
   Widget build(BuildContext context) {
     return SafeArea(
