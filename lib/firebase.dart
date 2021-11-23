@@ -1,25 +1,20 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart';
-import 'package:steel_crypt/steel_crypt.dart';
+import 'package:crypto/crypto.dart';
 import 'main.dart' as main;
 
 final _auth = FirebaseAuth.instance;
-String email = "";
-String password = "";
+String _email = "";
+String _password = "";
 
 String _encpass(String password) {
-  var _fortunaKey = CryptKey().genFortuna();
-  var _nonce = CryptKey().genDart(len: 12);
-  var _aesEncrypter = AesCrypt(
-    key: _fortunaKey,
-    padding: PaddingAES.pkcs7
-  );
-  return _aesEncrypter.gcm.encrypt(
-    inp: password,
-    iv: _nonce
-  );
+  var _bytes = utf8.encode(password);
+  return sha512.convert(_bytes).toString();
 }
 
 class LoginPage extends StatefulWidget {
@@ -51,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
             )
         ),
         onChanged: (value){
-          email = value;
+          _email = value;
         },
       ),
     );
@@ -68,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
             )
         ),
         onChanged: (value) async {
-          password = _encpass(value);
+          _password = _encpass(value);
         },
       ),
     );
@@ -84,9 +79,11 @@ class _LoginPageState extends State<LoginPage> {
           ),
           onPressed: () async {
             try {
+              print(_email);
+              print(_password);
               await _auth.signInWithEmailAndPassword(
-                email: email,
-                password: password
+                email: _email,
+                password: _password
               );
               Navigator.pushNamed(context, '/second');
             } on FirebaseAuthException catch (e){
@@ -132,8 +129,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-
-
 class RegisterPage extends StatefulWidget{
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -150,7 +145,8 @@ class _RegisterPageState extends State<RegisterPage>{
               TextFormField(
                 keyboardType: TextInputType.emailAddress,
                 onChanged: (value){
-                  email = value.toString().trim();
+                  _email = value.toString().trim();
+                  print(_email);
                 },
                 textAlign: TextAlign.center,
               ),
@@ -162,7 +158,8 @@ class _RegisterPageState extends State<RegisterPage>{
                   }
                 },
                 onChanged: (value) {
-                  password = _encpass(value);
+                  _password = _encpass(value);
+                  print(_password);
                 },
                 textAlign: TextAlign.center,
               ),
@@ -170,9 +167,11 @@ class _RegisterPageState extends State<RegisterPage>{
                 child: const Text("Registrieren"),
                 onPressed: () async{
                   try{
+                    print(_email);
+                    print(_password);
                     await _auth.createUserWithEmailAndPassword(
-                      email: email,
-                      password: password
+                      email: _email,
+                      password: _password
                     );
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
