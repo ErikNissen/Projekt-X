@@ -1,10 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:http/http.dart';
+import 'package:steel_crypt/steel_crypt.dart';
 import 'main.dart' as main;
 
+final _auth = FirebaseAuth.instance;
+String email = "";
+String password = "";
+
+String _encpass(String password) {
+  var _fortunaKey = CryptKey().genFortuna();
+  var _nonce = CryptKey().genDart(len: 12);
+  var _aesEncrypter = AesCrypt(
+    key: _fortunaKey,
+    padding: PaddingAES.pkcs7
+  );
+  return _aesEncrypter.gcm.encrypt(
+    inp: password,
+    iv: _nonce
+  );
+}
 
 class LoginPage extends StatefulWidget {
   @override
@@ -34,6 +50,9 @@ class _LoginPageState extends State<LoginPage> {
                 borderRadius: BorderRadius.circular(50.0)
             )
         ),
+        onChanged: (value){
+          email = value;
+        },
       ),
     );
     final inputPassword = Padding(
@@ -48,6 +67,9 @@ class _LoginPageState extends State<LoginPage> {
                 borderRadius: BorderRadius.circular(50.0)
             )
         ),
+        onChanged: (value) async {
+          password = _encpass(value);
+        },
       ),
     );
     final buttonLogin = Padding(
@@ -60,8 +82,22 @@ class _LoginPageState extends State<LoginPage> {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(50)
           ),
-          onPressed: () => {
-            Navigator.pushNamed(context, '/second')
+          onPressed: () async {
+            try {
+              await _auth.signInWithEmailAndPassword(
+                email: email,
+                password: password
+              );
+              Navigator.pushNamed(context, '/second');
+            } on FirebaseAuthException catch (e){
+              showDialog(
+                context: context,
+                builder: (ctx) => AlertDialog(
+                  title: const Text("Login fehlgeschlagen."),
+                  content: Text('${e.message}'),
+                )
+              );
+            }
           },
         ),
       ),
@@ -81,6 +117,12 @@ class _LoginPageState extends State<LoginPage> {
                 inputEmail,
                 inputPassword,
                 buttonLogin,
+                TextButton(
+                  child: const Text("Registrieren"),
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/register');
+                  },
+                ),
                 buttonForgotPassword
               ],
             ),
@@ -92,7 +134,69 @@ class _LoginPageState extends State<LoginPage> {
 
 
 
-
+class RegisterPage extends StatefulWidget{
+  @override
+  _RegisterPageState createState() => _RegisterPageState();
+}
+class _RegisterPageState extends State<RegisterPage>{
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            children: [
+              const Text("Registrieren"),
+              TextFormField(
+                keyboardType: TextInputType.emailAddress,
+                onChanged: (value){
+                  email = value.toString().trim();
+                },
+                textAlign: TextAlign.center,
+              ),
+              TextFormField(
+                obscureText: true,
+                validator: (value){
+                  if(value!.isEmpty){
+                    return "Bitte ein Passwort vergeben.";
+                  }
+                },
+                onChanged: (value) {
+                  password = _encpass(value);
+                },
+                textAlign: TextAlign.center,
+              ),
+              TextButton(
+                child: const Text("Registrieren"),
+                onPressed: () async{
+                  try{
+                    await _auth.createUserWithEmailAndPassword(
+                      email: email,
+                      password: password
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Erfolgreich registriert.")
+                      )
+                    );
+                  } on FirebaseAuthException catch (e){
+                    showDialog(
+                        context: context,
+                        builder: (ctx) => AlertDialog(
+                          title: const Text("Registrierung fehlgeschlagen"),
+                          content: Text('${e.message}'),
+                        )
+                    );
+                  }
+                },
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
 
 
 

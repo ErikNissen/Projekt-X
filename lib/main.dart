@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'crypto.dart' as crypto;
 import 'firebase.dart' as firebase;
+import 'package:firebase_core/firebase_core.dart';
 
 List _pwd = [];
 bool _UC = true;
@@ -10,18 +11,20 @@ bool _sym = true;
 bool _erwASCII = false;
 double _pwlen = 8;
 
-void main() {
+Future<void> main() async {
   runApp(
     MaterialApp(
       title: "Flutter ProjektX",
       initialRoute: '/',
       routes: {
         '/': (context) => firebase.LoginPage(),
+        '/register': (context) => firebase.RegisterPage(),
         '/second': (context) => const SecondScreen(),
         '/third': (context) => const ThirdScreen(),
       },
     )
   );
+  await Firebase.initializeApp();
 }
 
 /*****************************************************************
@@ -81,6 +84,16 @@ class SecondScreen extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: const Text("Passwort Generator"),
+          actions: [
+            Center(
+              child: IconButton(
+                icon: Icon(Icons.table_chart),
+                onPressed: (){
+                  Navigator.pushNamed(context, '/third');
+                },
+              ),
+            )
+          ],
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -142,122 +155,130 @@ class _pwOptions extends State<pwOptions> {
       children: [
         Row(
           children: [
-            Switch(
-              value: _UC,
-              onChanged: (value) {
-                setState(() {
-                  _UC = value;
-                });
-              },
-              activeTrackColor: Colors.lightGreenAccent,
-              activeColor: Colors.green,
+            Row(
+              children: [
+                Switch(
+                  value: _UC,
+                  onChanged: (value) {
+                    setState(() {
+                      _UC = value;
+                    });
+                  },
+                  activeTrackColor: Colors.lightGreenAccent,
+                  activeColor: Colors.green,
+                ),
+                Tooltip(
+                  message: 'Alle Großbuchstaben des Alphabets (ohne Umlaute).',
+                  child: const Text("Großbuchstaben"),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    gradient: const LinearGradient(colors: <Color>[Colors.blue, Colors.lightBlue]),
+                  ),
+                  height: 20,
+                  padding: const EdgeInsets.all(8),
+                  preferBelow: false,
+                  textStyle: const TextStyle(
+                    fontSize: 12,
+                  ),
+                  showDuration: const Duration(seconds: 2),
+                  waitDuration: const Duration(seconds: 1),
+                )
+              ],
             ),
-            Tooltip(
-              message: 'Alle Großbuchstaben des Alphabets (ohne Umlaute).',
-              child: const Text("Großbuchstaben"),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                gradient: const LinearGradient(colors: <Color>[Colors.blue, Colors.lightBlue]),
-              ),
-              height: 20,
-              padding: const EdgeInsets.all(8),
-              preferBelow: false,
-              textStyle: const TextStyle(
-                fontSize: 12,
-              ),
-              showDuration: const Duration(seconds: 2),
-              waitDuration: const Duration(seconds: 1),
+            Row(
+              children: [
+                Switch(
+                  value: _num,
+                  onChanged: (value) {
+                    setState(() {
+                      _num = value;
+                    });
+                  },
+                  activeTrackColor: Colors.lightGreenAccent,
+                  activeColor: Colors.green,
+                ),
+                Tooltip(
+                  message: 'Zahlen von 0-9.',
+                  child: const Text("Zahlen"),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    gradient: const LinearGradient(colors: <Color>[Colors.blue, Colors.lightBlue]),
+                  ),
+                  height: 20,
+                  padding: const EdgeInsets.all(8),
+                  preferBelow: false,
+                  textStyle: const TextStyle(
+                    fontSize: 12,
+                  ),
+                  showDuration: const Duration(seconds: 2),
+                  waitDuration: const Duration(seconds: 1),
+                )
+              ],
             )
           ],
         ),
         Row(
           children: [
-            Switch(
-              value: _LC,
-              onChanged: (value) {
-                setState(() {
-                  _LC = value;
-                });
-              },
-              activeTrackColor: Colors.lightGreenAccent,
-              activeColor: Colors.green,
+            Row(
+              children: [
+                Switch(
+                  value: _sym,
+                  onChanged: (value) {
+                    setState(() {
+                      _sym = value;
+                    });
+                  },
+                  activeTrackColor: Colors.lightGreenAccent,
+                  activeColor: Colors.green,
+                ),
+                Tooltip(
+                  message: """!\\"§\$%&/()=?*'<>;,:.-_+#~@{[]}´`|°^""",
+                  child: const Text("Symbole"),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    gradient: const LinearGradient(colors: <Color>[Colors.blue, Colors.lightBlue]),
+                  ),
+                  height: 20,
+                  padding: const EdgeInsets.all(8),
+                  preferBelow: false,
+                  textStyle: const TextStyle(
+                    fontSize: 12,
+                  ),
+                  showDuration: const Duration(seconds: 2),
+                  waitDuration: const Duration(seconds: 1),
+                )
+              ],
             ),
-            Tooltip(
-              message: 'Alle Kleinbuchstaben des Alphabets (ohne Umlaute).',
-              child: const Text("Kleinbuchstaben"),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                gradient: const LinearGradient(colors: <Color>[Colors.blue, Colors.lightBlue]),
-              ),
-              height: 20,
-              padding: const EdgeInsets.all(8),
-              preferBelow: false,
-              textStyle: const TextStyle(
-                fontSize: 12,
-              ),
-              showDuration: const Duration(seconds: 2),
-              waitDuration: const Duration(seconds: 1),
-            )
-          ],
-        ),
-        Row(
-          children: [
-            Switch(
-              value: _num,
-              onChanged: (value) {
-                setState(() {
-                  _num = value;
-                });
-              },
-              activeTrackColor: Colors.lightGreenAccent,
-              activeColor: Colors.green,
+            Row(
+              children: [
+                Switch(
+                  value: _LC,
+                  onChanged: (value) {
+                    setState(() {
+                      _LC = value;
+                    });
+                  },
+                  activeTrackColor: Colors.lightGreenAccent,
+                  activeColor: Colors.green,
+                ),
+                Tooltip(
+                  message: 'Alle Kleinbuchstaben des Alphabets (ohne Umlaute).',
+                  child: const Text("Kleinbuchstaben"),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    gradient: const LinearGradient(colors: <Color>[Colors.blue, Colors.lightBlue]),
+                  ),
+                  height: 20,
+                  padding: const EdgeInsets.all(8),
+                  preferBelow: false,
+                  textStyle: const TextStyle(
+                    fontSize: 12,
+                  ),
+                  showDuration: const Duration(seconds: 2),
+                  waitDuration: const Duration(seconds: 1),
+                )
+              ],
             ),
-            Tooltip(
-              message: 'Zahlen von 0-9.',
-              child: const Text("Zahlen"),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                gradient: const LinearGradient(colors: <Color>[Colors.blue, Colors.lightBlue]),
-              ),
-              height: 20,
-              padding: const EdgeInsets.all(8),
-              preferBelow: false,
-              textStyle: const TextStyle(
-                fontSize: 12,
-              ),
-              showDuration: const Duration(seconds: 2),
-              waitDuration: const Duration(seconds: 1),
-            )
-          ],
-        ),
-        Row(
-          children: [
-            Switch(
-              value: _sym,
-              onChanged: (value) {
-                setState(() {
-                  _sym = value;
-                });
-              },
-              activeTrackColor: Colors.lightGreenAccent,
-              activeColor: Colors.green,
-            ),
-            Tooltip(
-              message: """!\\"§\$%&/()=?*'<>;,:.-_+#~@{[]}´`|°^""",
-              child: const Text("Symbole"),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                gradient: const LinearGradient(colors: <Color>[Colors.blue, Colors.lightBlue]),
-              ),
-              height: 20,
-              padding: const EdgeInsets.all(8),
-              preferBelow: false,
-              textStyle: const TextStyle(
-                fontSize: 12,
-              ),
-              showDuration: const Duration(seconds: 2),
-              waitDuration: const Duration(seconds: 1),
-            )
           ],
         ),
         Row(

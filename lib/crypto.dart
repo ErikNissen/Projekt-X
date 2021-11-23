@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:math';
+//import 'dart:math';
 import 'package:http/http.dart' as http;
 
 String Qrand(int length){
@@ -9,27 +9,27 @@ String Qrand(int length){
 }
 
 Future<List> Gen_Password(List verbotene_symbole, double pwlen) async {
-  int entropy_R = 0;
+  //int entropy_R = 0;
   String versym = "";
   if(verbotene_symbole[0] == false){
     versym = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    entropy_R += versym.length;
+    //entropy_R += versym.length;
   }
   if(verbotene_symbole[1] == false){
     versym += "abcdefghijklmnopqrstuvwxyz";
-    entropy_R += versym.length;
+    //entropy_R += versym.length;
   }
   if(verbotene_symbole[2] == false){
     versym += "0123456789";
-    entropy_R += versym.length;
+    //entropy_R += versym.length;
   }
   if(verbotene_symbole[3] == false){
     versym += """!\\"§\$%&/()=?*'<>;,:.-_+#~@{[]}´`|°^""";
-    entropy_R += versym.length;
+    //entropy_R += versym.length;
   }
   if(verbotene_symbole[4] == false){
     versym += "€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ¡¢£¤¥¦§¨©ª«¬®¯±²³µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ";
-    entropy_R += versym.length;
+    //entropy_R += versym.length;
   }
 
   var _symL = """
@@ -39,9 +39,9 @@ Future<List> Gen_Password(List verbotene_symbole, double pwlen) async {
     !\\"§\$%&/()=?*'<>;,:.-_+#~@{[]}´`|°^
     €‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ¡¢£¤¥¦§¨©ª«¬®¯±²³µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ
     """.replaceAll("\n", "").replaceAll(" ", "").split("");
-  if(versym == ""){
+  /*if(versym == ""){
     entropy_R = _symL.length;
-  }
+  }*/
   String _sym = _symL.join("");
   String _erlSym = _sym;
   for(int j = 0; j < versym.length; j++){
@@ -62,6 +62,6 @@ Future<List> Gen_Password(List verbotene_symbole, double pwlen) async {
   for(var _num in _numbers){
     _pwd = "$_pwd${_erlSym.split("")[_num]}";
   }
-  var entropy = log(entropy_R) * pwlen;
+  //var entropy = log(entropy_R) * pwlen;
   return [_pwd.substring(0, pwlen.toInt())];
 }
