@@ -14,20 +14,17 @@
 
 ## Meilensteine 
 
-### ✔ M1
-<details><summary>Click to expand</summary>
+<details><summary><h3>✔M1</h3></summary>
 AF1 und AF2 sind erfüllt. Die Routen und die ListView/GridView müssen noch keine 
 sinnvollen Daten beinhalten. 
 </details>
 
-### ✔ M2
-<details><summary>Click to expand</summary>
+<details><summary><h3>✔M2</h3></summary>
 AF3 und AF4 sind erfüllt. Die App kann also Daten von einem Gerätesensor oder aus einer 
 öffentlichen API darstellen und den authentifizierten Anwender erkennen. 
 </details>
 
-### M3
-<details><summary>Click to expand</summary>
+<details><summary><h3>M3</h3></summary>
 Es wird die finale Version der App präsentiert, die alle oben genannten Anforderungen AF1-
 5 erfüllt.
 </details>
