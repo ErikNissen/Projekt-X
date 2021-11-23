@@ -99,9 +99,11 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-    const buttonForgotPassword = FlatButton(
+    var buttonForgotPassword = TextButton(
         child: Text('Passwort vergessen', style: TextStyle(color: Colors.grey, fontSize: 16),),
-        onPressed: null
+        onPressed: (){
+          Navigator.pushNamed(context, '/forgot');
+        },
     );
     return SafeArea(
         child: Scaffold(
@@ -125,6 +127,73 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         )
+    );
+  }
+}
+
+class ForgotPassword extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.lightBlueAccent,
+      body: Form(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                'Email Your Email',
+                style: TextStyle(fontSize: 30, color: Colors.white),
+              ),
+              TextFormField(
+
+                style: const TextStyle(color: Colors.white),
+                decoration: const InputDecoration(
+                  labelText: 'Email',
+                  icon: Icon(
+                    Icons.mail,
+                    color: Colors.white,
+                  ),
+                  errorStyle: TextStyle(color: Colors.white),
+                  labelStyle: TextStyle(color: Colors.white),
+                  hintStyle: TextStyle(color: Colors.white),
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                  errorBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Colors.white),
+                  ),
+                ),
+                onChanged: (value){
+                  _email = value;
+                },
+              ),
+              const SizedBox(height: 20),
+              TextButton(
+                child: const Text('Send Email'),
+                onPressed: () async {
+                  try{
+                    await _auth.sendPasswordResetEmail(email: _email);
+                  } catch (e){
+                    print("error");
+                    print(e);
+                  }
+                },
+              ),
+              TextButton(
+                child: const Text('Sign In'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

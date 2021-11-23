@@ -19,6 +19,7 @@ Future<void> main() async {
       routes: {
         '/': (context) => firebase.LoginPage(),
         '/register': (context) => firebase.RegisterPage(),
+        '/forgot': (context) => firebase.ForgotPassword(),
         '/second': (context) => const SecondScreen(),
         '/third': (context) => const ThirdScreen(),
       },
@@ -361,7 +362,7 @@ class _pwgen extends State<GenPwd> {
               ),
               onPressed: (){
                 setState(() {
-                  //Speicher Passwort in der DB
+                  //TODO: Speicher Passwort in der DB
                 });
               },
               child: const Text("Speichern"),
