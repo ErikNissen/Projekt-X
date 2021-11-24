@@ -18,6 +18,8 @@ String _encpass(String password) {
 }
 
 /*Fertig*/class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -39,15 +41,24 @@ String _encpass(String password) {
       child: TextField(
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
+          fillColor: main.darkmode?Colors.grey.shade800:Colors.white,
+          filled: true,
+          hintStyle: TextStyle(
+            color: !main.darkmode?Colors.black26:Colors.grey,
+          ),
+
             hintText: 'Email',
             contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
             border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(50.0)
+                borderRadius: BorderRadius.circular(50.0),
             )
         ),
         onChanged: (value){
           _email = value;
         },
+        style: TextStyle(
+          color: !main.darkmode?Colors.black12:Colors.white,
+        ),
       ),
     );
     final inputPassword = Padding(
@@ -56,15 +67,24 @@ String _encpass(String password) {
         keyboardType: TextInputType.emailAddress,
         obscureText: true,
         decoration: InputDecoration(
+            fillColor: main.darkmode?Colors.grey.shade800:Colors.white,
+            filled: true,
+            hintStyle: TextStyle(
+              color: !main.darkmode?Colors.black26:Colors.grey,
+            ),
             hintText: 'Passwort',
             contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(50.0)
             )
+
         ),
         onChanged: (value) async {
           _password = _encpass(value);
         },
+        style: TextStyle(
+          color: !main.darkmode?Colors.black12:Colors.white,
+        ),
       ),
     );
     final buttonLogin = Padding(
@@ -73,7 +93,7 @@ String _encpass(String password) {
         height: 56,
         child: RaisedButton(
           child: const Text('Login', style: TextStyle(color: Colors.white, fontSize: 20)),
-          color: Colors.black87,
+          color: Colors.blue,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(50)
           ),
@@ -100,13 +120,19 @@ String _encpass(String password) {
       ),
     );
     var buttonForgotPassword = TextButton(
-        child: Text('Passwort vergessen', style: TextStyle(color: Colors.grey, fontSize: 16),),
+        child: Text(
+          'Passwort vergessen',
+          style: TextStyle(
+              color: !main.darkmode?Colors.grey:Colors.white38,
+              fontSize: 16),
+        ),
         onPressed: (){
           Navigator.pushNamed(context, '/forgot');
         },
     );
     return SafeArea(
         child: Scaffold(
+          backgroundColor: main.darkmode?Colors.black:Colors.white,
           body: Center(
             child: ListView(
               shrinkWrap: true,
@@ -131,11 +157,17 @@ String _encpass(String password) {
   }
 }
 
-/*TODO: Style*/class ForgotPassword extends StatelessWidget {
+/*TODO: Style*/class ForgotPassword extends StatefulWidget {
+  @override
+  _forgotpassword createState() => _forgotpassword();
+
+}
+
+class _forgotpassword extends State<ForgotPassword>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.lightBlueAccent,
+      backgroundColor: main.darkmode?Colors.black:Colors.white,
       body: Form(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -207,6 +239,7 @@ String _encpass(String password) {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: main.darkmode?Colors.black:Colors.white,
         body: Center(
           child: Column(
             children: [

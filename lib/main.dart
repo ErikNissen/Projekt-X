@@ -9,6 +9,8 @@ bool _LC = true;
 bool _num = true;
 bool _sym = true;
 bool _erwASCII = false;
+bool darkmode = false;
+bool _offlinemode = false;
 double _pwlen = 8;
 
 Future<void> main() async {
@@ -22,6 +24,7 @@ Future<void> main() async {
         '/forgot': (context) => firebase.ForgotPassword(),
         '/second': (context) => const SecondScreen(),
         '/third': (context) => const ThirdScreen(),
+        '/settings': (context) => const Settings(),
       },
     )
   );
@@ -35,14 +38,26 @@ Future<void> main() async {
  *
  ****************************************************************** */
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
+  _homescreen createState() => _homescreen();
+
+}
+
+class _homescreen extends State<HomeScreen>{
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: darkmode?Colors.black:Colors.white,
       appBar: AppBar(
-        title: const Text('Home Screen'),
+        title: Text(
+          'Home Screen',
+          style: TextStyle(
+            color: !darkmode?Colors.black:Colors.white,
+          ),
+        ),
       ),
       body: Container(
         decoration: const BoxDecoration(color: Colors.grey),
@@ -52,17 +67,27 @@ class HomeScreen extends StatelessWidget {
             Navigator.pushNamed(context, '/second');
           },
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              const Text("Goto Second Screen"),
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(
+                  "Goto Second Screen",
+                  style: TextStyle(
+                    color: !darkmode?Colors.black:Colors.white,
+                  ),
+                ),
 
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/third');
-                },
-                child: const Text('Goto Third Screen'),
-              )
-            ]
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/third');
+                  },
+                  child: Text(
+                    'Goto Third Screen',
+                    style: TextStyle(
+                      color: !darkmode?Colors.black:Colors.white,
+                    ),
+                  ),
+                )
+              ]
           ),
         ),
       ),
@@ -77,20 +102,40 @@ class HomeScreen extends StatelessWidget {
 *
 ****************************************************************** */
 
-class SecondScreen extends StatelessWidget {
+class SecondScreen extends StatefulWidget {
   const SecondScreen({Key? key}) : super(key: key);
 
   @override
+  _secondscreen createState() => _secondscreen();
+
+}
+
+class _secondscreen extends State<SecondScreen>{
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: darkmode?Colors.black:Colors.white,
         appBar: AppBar(
-          title: const Text("Passwort Generator"),
+          title: Text(
+            "Passwort Generator",
+            style: TextStyle(
+              color: !darkmode?Colors.black:Colors.white,
+            ),
+          ),
           actions: [
             Center(
               child: IconButton(
-                icon: Icon(Icons.table_chart),
+                icon: const Icon(Icons.table_chart),
                 onPressed: (){
                   Navigator.pushNamed(context, '/third');
+                },
+              ),
+            ),
+            Center(
+              child: IconButton(
+                icon: const Icon(Icons.settings),
+                onPressed: (){
+                  Navigator.pushNamed(context, '/settings');
                 },
               ),
             )
@@ -110,6 +155,8 @@ class SecondScreen extends StatelessWidget {
 }
 
 class pwlenSlider extends StatefulWidget{
+  const pwlenSlider({Key? key}) : super(key: key);
+
   @override
   _pwlenSlider createState() => _pwlenSlider();
 }
@@ -122,7 +169,12 @@ class _pwlenSlider extends State<pwlenSlider> {
       children: [
         Row(
           children: [
-            Text("Länge: ${_pwlen.round()}"),
+            Text(
+                "Länge: ${_pwlen.round()}",
+              style: TextStyle(
+                color: !darkmode?Colors.black:Colors.white,
+              ),
+            ),
             Slider(
               value: _pwlen,
               min: 8,
@@ -144,6 +196,8 @@ class _pwlenSlider extends State<pwlenSlider> {
 }
 
 class pwOptions extends StatefulWidget{
+  const pwOptions({Key? key}) : super(key: key);
+
   @override
   _pwOptions createState() => _pwOptions();
 }
@@ -170,7 +224,12 @@ class _pwOptions extends State<pwOptions> {
                 ),
                 Tooltip(
                   message: 'Alle Großbuchstaben des Alphabets (ohne Umlaute).',
-                  child: const Text("Großbuchstaben"),
+                  child: Text(
+                      "Großbuchstaben",
+                    style: TextStyle(
+                      color: !darkmode?Colors.black:Colors.white,
+                    ),
+                  ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
                     gradient: const LinearGradient(colors: <Color>[Colors.blue, Colors.lightBlue]),
@@ -200,7 +259,12 @@ class _pwOptions extends State<pwOptions> {
                 ),
                 Tooltip(
                   message: 'Zahlen von 0-9.',
-                  child: const Text("Zahlen"),
+                  child: Text(
+                      "Zahlen",
+                    style: TextStyle(
+                      color: !darkmode?Colors.black:Colors.white,
+                    ),
+                  ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
                     gradient: const LinearGradient(colors: <Color>[Colors.blue, Colors.lightBlue]),
@@ -234,7 +298,12 @@ class _pwOptions extends State<pwOptions> {
                 ),
                 Tooltip(
                   message: """!\\"§\$%&/()=?*'<>;,:.-_+#~@{[]}´`|°^""",
-                  child: const Text("Symbole"),
+                  child: Text(
+                      "Symbole",
+                    style: TextStyle(
+                      color: !darkmode?Colors.black:Colors.white,
+                    ),
+                  ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
                     gradient: const LinearGradient(colors: <Color>[Colors.blue, Colors.lightBlue]),
@@ -264,7 +333,12 @@ class _pwOptions extends State<pwOptions> {
                 ),
                 Tooltip(
                   message: 'Alle Kleinbuchstaben des Alphabets (ohne Umlaute).',
-                  child: const Text("Kleinbuchstaben"),
+                  child: Text(
+                      "Kleinbuchstaben",
+                    style: TextStyle(
+                      color: !darkmode?Colors.black:Colors.white,
+                    ),
+                  ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
                     gradient: const LinearGradient(colors: <Color>[Colors.blue, Colors.lightBlue]),
@@ -296,7 +370,12 @@ class _pwOptions extends State<pwOptions> {
             ),
             Tooltip(
               message: '€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—\n˜™š›œžŸ¡¢£¤¥¦§¨©ª«¬®\n¯±²³µ¶·¸¹º»¼½¾¿ÀÁÂÃÄ\nÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×Ø\nÙÚÛÜÝÞßàáâãäåæçèéêëì\níîïðñòóôõö÷øùúûüýþÿ',
-              child: const Text("Erw. ASCII"),
+              child: Text(
+                  "Erw. ASCII",
+                style: TextStyle(
+                  color: !darkmode?Colors.black:Colors.white,
+                ),
+              ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25),
                 gradient: const LinearGradient(colors: <Color>[Colors.blue, Colors.lightBlue]),
@@ -318,6 +397,8 @@ class _pwOptions extends State<pwOptions> {
 }
 
 class GenPwd extends StatefulWidget{
+  const GenPwd({Key? key}) : super(key: key);
+
   @override
   _pwgen createState() => _pwgen();
 }
@@ -381,6 +462,9 @@ class _pwgen extends State<GenPwd> {
                     pwd,
                     overflow: TextOverflow.clip,
                     softWrap: true,
+                    style: TextStyle(
+                      color: darkmode?Colors.white:Colors.black,
+                    ),
                   ),
                 ),
               ),
@@ -393,18 +477,20 @@ class _pwgen extends State<GenPwd> {
 }
 
 class UpdateText extends StatefulWidget {
+  const UpdateText({Key? key}) : super(key: key);
+
 
   UpdateTextState createState() => UpdateTextState();
 
 }
 
-class UpdateTextState extends State {
-  String textHolder = "";
+class UpdateTextState extends State<UpdateText> {
+  String _textHolder = "";
 
   changeText() {
 
     setState(() {
-      textHolder = _pwd[0];
+      _textHolder = _pwd[0];
     });
 
   }
@@ -412,13 +498,21 @@ class UpdateTextState extends State {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(child: Column(
+        body: Center(
+            child: Column(
             children: <Widget>[
               Container(
                   padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-                  child: Text(textHolder,
-                      style: const TextStyle(fontSize: 21))),
-            ]))
+                  child: Text(_textHolder,
+                      style: TextStyle(
+                          fontSize: 21,
+                          backgroundColor: !darkmode?Colors.black:Colors.white,
+                      )
+                  )
+              ),
+            ]
+          )
+        )
     );
   }
 }
@@ -430,17 +524,22 @@ class UpdateTextState extends State {
  *
  ****************************************************************** */
 
-class ThirdScreen extends StatelessWidget {
+class ThirdScreen extends StatefulWidget {
   const ThirdScreen({Key? key}) : super(key: key);
 
   @override
+  _thirdscreen createState() => _thirdscreen();
+}
+class _thirdscreen extends State<ThirdScreen>{
+  @override
   Widget build(BuildContext context) {
-  return Scaffold(
-  appBar: AppBar(
-  title: const Text('Third Screen'),
-  ),
-  body: _buildList()
-  );
+    return Scaffold(
+        backgroundColor: darkmode?Colors.black:Colors.white,
+        appBar: AppBar(
+          title: const Text('Third Screen'),
+        ),
+        body: _buildList()
+    );
   }
 }
 
@@ -462,10 +561,101 @@ Widget _buildList() => ListView(
     ]);
 
 ListTile _tile(String title, String subtitle, IconData icon) => ListTile(
-  title: Text(title, style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20)),
-  subtitle: Text(subtitle),
+  title: Text(title, style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20, color: !darkmode?Colors.black:Colors.white)),
+  subtitle: Text(subtitle, style: TextStyle(color: !darkmode?Colors.black:Colors.white)),
   leading: Icon(icon, color: Colors.blue[500]),
 );
+
+
+/*
+*
+*                   Page "Settings"
+*
+*
+* */
+class Settings extends StatefulWidget {
+  const Settings({Key? key}) : super(key: key);
+
+  @override
+  _Settings createState() => _Settings();
+}
+
+class _Settings extends State<Settings>{
+  @override
+  Widget build(BuildContext context) {
+    return  SafeArea(
+      child: Scaffold(
+          backgroundColor: darkmode?Colors.black:Colors.white,
+        appBar: AppBar(
+          title: const Text("Einstellungen"),
+        ),
+        body: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(
+                  "Offline Datenbank",
+                  style: TextStyle(
+                    color: !darkmode?Colors.black:Colors.white,
+                  ),
+                ),
+                Switch(
+                    value: _offlinemode,
+                    onChanged: (value){
+                      setState(() {
+                        _offlinemode = value;
+                      });
+                    }
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(
+                    "Darkmode",
+                  style: TextStyle(
+                    color: !darkmode?Colors.black:Colors.white,
+                  ),
+                ),
+                Switch(
+                    value: darkmode,
+                    onChanged: (value){
+                      setState(() {
+                        darkmode = value;
+                      });
+                    }
+                ),
+              ],
+            ),
+            /*Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                const Text("C"),
+                Switch(
+                    value: true,
+                    onChanged: null
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                const Text("D"),
+                Switch(
+                    value: true,
+                    onChanged: null
+                ),
+              ],
+            ),*/
+          ],
+        )
+      ),
+    );
+  }
+
+}
 
 
 
