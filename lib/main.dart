@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'crypto.dart' as crypto;
 import 'firebase.dart' as firebase;
 import 'package:firebase_core/firebase_core.dart';
+import 'package:get/get.dart';
 
 List _pwd = [];
 bool _UC = true;
@@ -9,17 +10,67 @@ bool _LC = true;
 bool _num = true;
 bool _sym = true;
 bool _erwASCII = false;
-bool darkmode = false;
 bool _offlinemode = false;
 double _pwlen = 8;
 
+List<Color> colors = const [
+  Color(0xff800080),
+  Color(0xff8C008C),
+  Color(0xffCC00CC)
+];
+
 Future<void> main() async {
   runApp(
-    MaterialApp(
+    GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark().copyWith(
+        buttonTheme: ButtonThemeData(
+          buttonColor: colors[1],
+          textTheme: ButtonTextTheme.primary,
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+              primary: colors[2]
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            primary: colors[1]
+          )
+        ),
+        sliderTheme: SliderThemeData(
+          thumbColor: colors[1],
+          activeTrackColor: colors[2],
+          inactiveTrackColor: colors[0]
+        ),
+        switchTheme: const SwitchThemeData().copyWith(
+          thumbColor: MaterialStateProperty.all(colors[1]),
+          trackColor: MaterialStateProperty.all(colors[0])
+        ),
+        appBarTheme: AppBarTheme(
+          color: colors[0],
+        ),
+        inputDecorationTheme: const InputDecorationTheme().copyWith(
+          enabledBorder: const OutlineInputBorder().copyWith(
+            borderSide: const BorderSide().copyWith(
+                color: colors[1]
+            ),
+            borderRadius: BorderRadius.circular(50.0),
+          ),
+          focusedBorder: const OutlineInputBorder().copyWith(
+              borderSide: const BorderSide().copyWith(
+                  color: colors[2]
+              ),
+              borderRadius: BorderRadius.circular(50.0),
+          )
+        )
+      ),
+      themeMode: ThemeMode.dark,
       title: "Flutter ProjektX",
       initialRoute: '/',
       routes: {
-        '/': (context) => firebase.LoginPage(),
+        '/': (context) => const firebase.LoginPage(),
         '/register': (context) => firebase.RegisterPage(),
         '/forgot': (context) => firebase.ForgotPassword(),
         '/second': (context) => const SecondScreen(),
@@ -50,17 +101,12 @@ class _homescreen extends State<HomeScreen>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: darkmode?Colors.black:Colors.white,
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Home Screen',
-          style: TextStyle(
-            color: !darkmode?Colors.black:Colors.white,
-          ),
         ),
       ),
       body: Container(
-        decoration: const BoxDecoration(color: Colors.grey),
         padding: const EdgeInsets.all(20),
         child: ElevatedButton(
           onPressed: () {
@@ -69,22 +115,16 @@ class _homescreen extends State<HomeScreen>{
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text(
+                const Text(
                   "Goto Second Screen",
-                  style: TextStyle(
-                    color: !darkmode?Colors.black:Colors.white,
-                  ),
                 ),
 
                 ElevatedButton(
                   onPressed: () {
                     Navigator.pushNamed(context, '/third');
                   },
-                  child: Text(
+                  child: const Text(
                     'Goto Third Screen',
-                    style: TextStyle(
-                      color: !darkmode?Colors.black:Colors.white,
-                    ),
                   ),
                 )
               ]
@@ -114,13 +154,9 @@ class _secondscreen extends State<SecondScreen>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: darkmode?Colors.black:Colors.white,
         appBar: AppBar(
-          title: Text(
+          title: const Text(
             "Passwort Generator",
-            style: TextStyle(
-              color: !darkmode?Colors.black:Colors.white,
-            ),
           ),
           actions: [
             Center(
@@ -143,7 +179,7 @@ class _secondscreen extends State<SecondScreen>{
         ),
         body: SingleChildScrollView(
           child: Column(
-            children: [
+            children: const [
               pwlenSlider(),
               pwOptions(),
               GenPwd()
@@ -171,9 +207,6 @@ class _pwlenSlider extends State<pwlenSlider> {
           children: [
             Text(
                 "Länge: ${_pwlen.round()}",
-              style: TextStyle(
-                color: !darkmode?Colors.black:Colors.white,
-              ),
             ),
             Slider(
               value: _pwlen,
@@ -219,16 +252,11 @@ class _pwOptions extends State<pwOptions> {
                       _UC = value;
                     });
                   },
-                  activeTrackColor: Colors.lightGreenAccent,
-                  activeColor: Colors.green,
                 ),
                 Tooltip(
                   message: 'Alle Großbuchstaben des Alphabets (ohne Umlaute).',
-                  child: Text(
+                  child: const Text(
                       "Großbuchstaben",
-                    style: TextStyle(
-                      color: !darkmode?Colors.black:Colors.white,
-                    ),
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
@@ -254,16 +282,11 @@ class _pwOptions extends State<pwOptions> {
                       _num = value;
                     });
                   },
-                  activeTrackColor: Colors.lightGreenAccent,
-                  activeColor: Colors.green,
                 ),
                 Tooltip(
                   message: 'Zahlen von 0-9.',
-                  child: Text(
+                  child: const Text(
                       "Zahlen",
-                    style: TextStyle(
-                      color: !darkmode?Colors.black:Colors.white,
-                    ),
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
@@ -293,16 +316,11 @@ class _pwOptions extends State<pwOptions> {
                       _sym = value;
                     });
                   },
-                  activeTrackColor: Colors.lightGreenAccent,
-                  activeColor: Colors.green,
                 ),
                 Tooltip(
                   message: """!\\"§\$%&/()=?*'<>;,:.-_+#~@{[]}´`|°^""",
-                  child: Text(
+                  child: const Text(
                       "Symbole",
-                    style: TextStyle(
-                      color: !darkmode?Colors.black:Colors.white,
-                    ),
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
@@ -328,16 +346,11 @@ class _pwOptions extends State<pwOptions> {
                       _LC = value;
                     });
                   },
-                  activeTrackColor: Colors.lightGreenAccent,
-                  activeColor: Colors.green,
                 ),
                 Tooltip(
                   message: 'Alle Kleinbuchstaben des Alphabets (ohne Umlaute).',
-                  child: Text(
+                  child: const Text(
                       "Kleinbuchstaben",
-                    style: TextStyle(
-                      color: !darkmode?Colors.black:Colors.white,
-                    ),
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
@@ -365,16 +378,11 @@ class _pwOptions extends State<pwOptions> {
                   _erwASCII = value;
                 });
               },
-              activeTrackColor: Colors.lightGreenAccent,
-              activeColor: Colors.green,
             ),
             Tooltip(
               message: '€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—\n˜™š›œžŸ¡¢£¤¥¦§¨©ª«¬®\n¯±²³µ¶·¸¹º»¼½¾¿ÀÁÂÃÄ\nÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×Ø\nÙÚÛÜÝÞßàáâãäåæçèéêëì\níîïðñòóôõö÷øùúûüýþÿ',
-              child: Text(
+              child: const Text(
                   "Erw. ASCII",
-                style: TextStyle(
-                  color: !darkmode?Colors.black:Colors.white,
-                ),
               ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(25),
@@ -424,23 +432,27 @@ class _pwgen extends State<GenPwd> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             _isLoading? const CircularProgressIndicator() : TextButton(
-              style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-              ),
               onPressed: () async {
-                _Loading();
-                _pwd = await crypto.Gen_Password([_UC, _LC, _num, _sym, _erwASCII], _pwlen);
-                setState(() {
-                  updatepwd();
-                });
-                _Loading();
+                if(_UC == _LC && _LC == _num && _num == _sym && _sym == _erwASCII && _erwASCII == false){
+                  showDialog(
+                      context: context,
+                      builder: (ctx) => const AlertDialog(
+                        title: Text("Achtung"),
+                        content: Text('Mindestens eine Symbolgruppe muss gewählt werden!'),
+                      )
+                  );
+                }else {
+                  _Loading();
+                  _pwd = await crypto.Gen_Password([_UC, _LC, _num, _sym, _erwASCII], _pwlen);
+                  setState(() {
+                    updatepwd();
+                  });
+                  _Loading();
+                }
               },
               child: const Text("Generiere Passwort"),
             ),
             TextButton(
-              style: ButtonStyle(
-                foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-              ),
               onPressed: (){
                 setState(() {
                   //TODO: Speicher Passwort in der DB
@@ -462,9 +474,6 @@ class _pwgen extends State<GenPwd> {
                     pwd,
                     overflow: TextOverflow.clip,
                     softWrap: true,
-                    style: TextStyle(
-                      color: darkmode?Colors.white:Colors.black,
-                    ),
                   ),
                 ),
               ),
@@ -504,9 +513,8 @@ class UpdateTextState extends State<UpdateText> {
               Container(
                   padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
                   child: Text(_textHolder,
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 21,
-                          backgroundColor: !darkmode?Colors.black:Colors.white,
                       )
                   )
               ),
@@ -534,7 +542,6 @@ class _thirdscreen extends State<ThirdScreen>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: darkmode?Colors.black:Colors.white,
         appBar: AppBar(
           title: const Text('Third Screen'),
         ),
@@ -561,9 +568,9 @@ Widget _buildList() => ListView(
     ]);
 
 ListTile _tile(String title, String subtitle, IconData icon) => ListTile(
-  title: Text(title, style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20, color: !darkmode?Colors.black:Colors.white)),
-  subtitle: Text(subtitle, style: TextStyle(color: !darkmode?Colors.black:Colors.white)),
-  leading: Icon(icon, color: Colors.blue[500]),
+  title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 20,)),
+  subtitle: Text(subtitle,),
+  leading: Icon(icon),
 );
 
 
@@ -585,7 +592,6 @@ class _Settings extends State<Settings>{
   Widget build(BuildContext context) {
     return  SafeArea(
       child: Scaffold(
-          backgroundColor: darkmode?Colors.black:Colors.white,
         appBar: AppBar(
           title: const Text("Einstellungen"),
         ),
@@ -594,36 +600,14 @@ class _Settings extends State<Settings>{
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text(
+                const Text(
                   "Offline Datenbank",
-                  style: TextStyle(
-                    color: !darkmode?Colors.black:Colors.white,
-                  ),
                 ),
                 Switch(
                     value: _offlinemode,
                     onChanged: (value){
                       setState(() {
                         _offlinemode = value;
-                      });
-                    }
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                    "Darkmode",
-                  style: TextStyle(
-                    color: !darkmode?Colors.black:Colors.white,
-                  ),
-                ),
-                Switch(
-                    value: darkmode,
-                    onChanged: (value){
-                      setState(() {
-                        darkmode = value;
                       });
                     }
                 ),

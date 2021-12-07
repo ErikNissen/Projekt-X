@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -32,7 +32,15 @@ String _encpass(String password) {
           tag: 'hero',
           child: CircleAvatar(
             radius: 56.0,
-            child: Image.network('https://www.pngkit.com/png/full/301-3012694_account-user-profile-avatar-comments-fa-user-circle.png'),
+            child: ColorFiltered(
+              colorFilter: const ColorFilter.matrix([
+                -1, 0, 0, 0,
+                255, 0, -1, 0, 0,
+                255, 0, 0, -1, 0,
+                255, 0, 0, 0, 1, 0,
+              ]),
+              child: Image.network('https://www.pngkit.com/png/full/301-3012694_account-user-profile-avatar-comments-fa-user-circle.png'),
+            )
           )
       ),
     );
@@ -41,24 +49,15 @@ String _encpass(String password) {
       child: TextField(
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
-          fillColor: main.darkmode?Colors.grey.shade800:Colors.white,
-          filled: true,
-          hintStyle: TextStyle(
-            color: !main.darkmode?Colors.black26:Colors.grey,
-          ),
-
             hintText: 'Email',
             contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(50.0),
-            )
+            ).copyWith()
         ),
         onChanged: (value){
           _email = value;
         },
-        style: TextStyle(
-          color: !main.darkmode?Colors.black12:Colors.white,
-        ),
       ),
     );
     final inputPassword = Padding(
@@ -67,11 +66,6 @@ String _encpass(String password) {
         keyboardType: TextInputType.emailAddress,
         obscureText: true,
         decoration: InputDecoration(
-            fillColor: main.darkmode?Colors.grey.shade800:Colors.white,
-            filled: true,
-            hintStyle: TextStyle(
-              color: !main.darkmode?Colors.black26:Colors.grey,
-            ),
             hintText: 'Passwort',
             contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
             border: OutlineInputBorder(
@@ -82,25 +76,23 @@ String _encpass(String password) {
         onChanged: (value) async {
           _password = _encpass(value);
         },
-        style: TextStyle(
-          color: !main.darkmode?Colors.black12:Colors.white,
-        ),
       ),
     );
     final buttonLogin = Padding(
       padding: const EdgeInsets.only(bottom: 5),
       child: ButtonTheme(
         height: 56,
-        child: RaisedButton(
-          child: const Text('Login', style: TextStyle(color: Colors.white, fontSize: 20)),
-          color: Colors.blue,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(50)
+        child: ElevatedButton(
+          child: const Text('Login', style: TextStyle(fontSize: 20)),
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.0)
+            )
           ),
           onPressed: () async {
             try {
-              print(_email);
-              print(_password);
+              //print(_email);
+              //print(_password);
               await _auth.signInWithEmailAndPassword(
                 email: _email,
                 password: _password
@@ -120,10 +112,9 @@ String _encpass(String password) {
       ),
     );
     var buttonForgotPassword = TextButton(
-        child: Text(
+        child: const Text(
           'Passwort vergessen',
           style: TextStyle(
-              color: !main.darkmode?Colors.grey:Colors.white38,
               fontSize: 16),
         ),
         onPressed: (){
@@ -132,7 +123,6 @@ String _encpass(String password) {
     );
     return SafeArea(
         child: Scaffold(
-          backgroundColor: main.darkmode?Colors.black:Colors.white,
           body: Center(
             child: ListView(
               shrinkWrap: true,
@@ -167,7 +157,6 @@ class _forgotpassword extends State<ForgotPassword>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: main.darkmode?Colors.black:Colors.white,
       body: Form(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -176,28 +165,19 @@ class _forgotpassword extends State<ForgotPassword>{
             children: [
               const Text(
                 'Email Your Email',
-                style: TextStyle(fontSize: 30, color: Colors.white),
+                style: TextStyle(fontSize: 30,),
               ),
               TextFormField(
-
-                style: const TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
                   labelText: 'Email',
                   icon: Icon(
                     Icons.mail,
-                    color: Colors.white,
                   ),
-                  errorStyle: TextStyle(color: Colors.white),
-                  labelStyle: TextStyle(color: Colors.white),
-                  hintStyle: TextStyle(color: Colors.white),
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
                   ),
                   enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
                   ),
                   errorBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
                   ),
                 ),
                 onChanged: (value){
@@ -211,8 +191,8 @@ class _forgotpassword extends State<ForgotPassword>{
                   try{
                     await _auth.sendPasswordResetEmail(email: _email);
                   } catch (e){
-                    print("error");
-                    print(e);
+                    //print("error");
+                    //print(e);
                   }
                 },
               ),
@@ -239,20 +219,27 @@ class _forgotpassword extends State<ForgotPassword>{
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: main.darkmode?Colors.black:Colors.white,
+        appBar: AppBar(
+          title: const Text("Registrieren"),
+        ),
         body: Center(
           child: Column(
             children: [
-              const Text("Registrieren"),
               TextFormField(
                 keyboardType: TextInputType.emailAddress,
+                decoration: const InputDecoration(
+                  hintText: "E-Mail"
+                ),
                 onChanged: (value){
                   _email = value.toString().trim();
-                  print(_email);
+                  //print(_email);
                 },
                 textAlign: TextAlign.center,
               ),
               TextFormField(
+                decoration: const InputDecoration(
+                  hintText: "Passwort"
+                ),
                 obscureText: true,
                 validator: (value){
                   if(value!.isEmpty){
@@ -261,7 +248,7 @@ class _forgotpassword extends State<ForgotPassword>{
                 },
                 onChanged: (value) {
                   _password = _encpass(value);
-                  print(_password);
+                  //print(_password);
                 },
                 textAlign: TextAlign.center,
               ),
@@ -269,8 +256,8 @@ class _forgotpassword extends State<ForgotPassword>{
                 child: const Text("Registrieren"),
                 onPressed: () async{
                   try{
-                    print(_email);
-                    print(_password);
+                    //print(_email);
+                    //print(_password);
                     await _auth.createUserWithEmailAndPassword(
                       email: _email,
                       password: _password
