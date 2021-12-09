@@ -17,16 +17,60 @@ double _pwlen = 8;
 String _note = "";
 
 List<Color> colors = const [
-  Color(0xff800080),
-  Color(0xff8C008C),
-  Color(0xffCC00CC)
+  Color(0xff800080), //0
+  Color(0xff8C008C), //1
+  Color(0xffCC00CC), //2
+  Color(0xff00CC00), //3
+  Color(0xff00A600), //4
+  Color(0xff008000)  //5
 ];
 
 Future<void> main() async {
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.light(),
+      theme: ThemeData.light().copyWith(
+        buttonTheme: ButtonThemeData(
+          buttonColor: colors[4],
+          textTheme: ButtonTextTheme.primary,
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+              primary: colors[5]
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+                primary: colors[4]
+            )
+        ),
+        sliderTheme: SliderThemeData(
+            thumbColor: colors[4],
+            activeTrackColor: colors[5],
+            inactiveTrackColor: colors[3]
+        ),
+        switchTheme: const SwitchThemeData().copyWith(
+            thumbColor: MaterialStateProperty.all(colors[4]),
+            trackColor: MaterialStateProperty.all(colors[3])
+        ),
+        appBarTheme: AppBarTheme(
+          color: colors[3],
+        ),
+        inputDecorationTheme: const InputDecorationTheme().copyWith(
+            enabledBorder: const OutlineInputBorder().copyWith(
+              borderSide: const BorderSide().copyWith(
+                  color: colors[4]
+              ),
+              borderRadius: BorderRadius.circular(50.0),
+            ),
+            focusedBorder: const OutlineInputBorder().copyWith(
+              borderSide: const BorderSide().copyWith(
+                  color: colors[5]
+              ),
+              borderRadius: BorderRadius.circular(50.0),
+            )
+        )
+      ),
       darkTheme: ThemeData.dark().copyWith(
         buttonTheme: ButtonThemeData(
           buttonColor: colors[1],
