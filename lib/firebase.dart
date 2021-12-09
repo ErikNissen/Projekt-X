@@ -18,6 +18,16 @@ String _encpass(String password) {
   return sha512.convert(_bytes).toString();
 }
 
+Future<List> getData() async{
+  var _collection = await FirebaseFirestore.instance.collection(createcollection()).get();
+  var _docs = _collection.docs;
+  var _jdoc = [];
+  for(var i in _docs){
+    _jdoc.add(i.data());
+  }
+  return _jdoc;
+}
+
 String createcollection(){
   var _bytes = utf8.encode(_email+_encpass(_password));
   return md5.convert(_bytes).toString();
@@ -110,6 +120,7 @@ String createcollection(){
                   "Erstellt am": null
                 });
               }
+              getData();
 
               Navigator.pushNamed(context, '/second');
             } on FirebaseAuthException catch (e){
@@ -308,6 +319,11 @@ class _forgotpassword extends State<ForgotPassword>{
 * */
 
 class DatenbankView extends StatelessWidget {
+   getData() async{
+    var collection = await FirebaseFirestore.instance.collection(createcollection()).get();
+    var docs = collection.docs;
+    print(docs);
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
