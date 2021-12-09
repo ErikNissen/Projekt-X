@@ -3,6 +3,7 @@ import 'crypto.dart' as crypto;
 import 'firebase.dart' as firebase;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 List _pwd = [];
 bool _UC = true;
@@ -442,12 +443,29 @@ class _pwgen extends State<GenPwd> {
                       )
                   );
                 }else {
-                  _Loading();
-                  _pwd = await crypto.Gen_Password([_UC, _LC, _num, _sym, _erwASCII], _pwlen);
-                  setState(() {
-                    updatepwd();
-                  });
-                  _Loading();
+                  var error;
+                  try{
+                    var req = await http.get(Uri.parse("https://qrng.anu.edu.au"));
+                    error = req.statusCode;
+                  }catch (e){
+                    error = int.parse(e.toString().split("=").last.split(")")[0].toString());
+                  }
+                  if(error == 200){
+                    _Loading();
+                    _pwd = await crypto.Gen_Password([_UC, _LC, _num, _sym, _erwASCII], _pwlen);
+                    setState(() {
+                      updatepwd();
+                    });
+                    _Loading();
+                  }else{
+                    showDialog(
+                        context: context,
+                        builder: (ctx) => const AlertDialog(
+                          title: Text("Achtung"),
+                          content: Text('Es konnte keine Internetverbindung hergestellt werden.'),
+                        )
+                    );
+                  }
                 }
               },
               child: const Text("Generiere Passwort"),
