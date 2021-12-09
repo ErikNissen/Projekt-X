@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:crypto/crypto.dart';
 import 'main.dart' as main;
+import 'package:firebase_core/firebase_core.dart';
 
 final _auth = FirebaseAuth.instance;
 String _email = "";
@@ -15,6 +16,11 @@ String _password = "";
 String _encpass(String password) {
   var _bytes = utf8.encode(password);
   return sha512.convert(_bytes).toString();
+}
+
+String createcollection(){
+  var _bytes = utf8.encode(_email+_encpass(_password));
+  return md5.convert(_bytes).toString();
 }
 
 /*Fertig*/class LoginPage extends StatefulWidget {
@@ -97,6 +103,14 @@ String _encpass(String password) {
                 email: _email,
                 password: _password
               );
+              if((await FirebaseFirestore.instance.collection(createcollection()).get()).size == 0){
+                FirebaseFirestore.instance.collection(createcollection()).add({
+                  "notiz": null,
+                  "passwort": null,
+                  "Erstellt am": null
+                });
+              }
+
               Navigator.pushNamed(context, '/second');
             } on FirebaseAuthException catch (e){
               showDialog(

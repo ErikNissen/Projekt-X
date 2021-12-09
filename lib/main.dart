@@ -4,6 +4,7 @@ import 'firebase.dart' as firebase;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 List _pwd = [];
 bool _UC = true;
@@ -13,6 +14,7 @@ bool _sym = true;
 bool _erwASCII = false;
 bool _offlinemode = false;
 double _pwlen = 8;
+String _note = "";
 
 List<Color> colors = const [
   Color(0xff800080),
@@ -472,8 +474,42 @@ class _pwgen extends State<GenPwd> {
             ),
             TextButton(
               onPressed: (){
+                showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                      title: const Text("Notiz"),
+                      content: TextField(
+                        decoration: const InputDecoration(
+                          hintText: "Wofür ist das Passwort?"
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                              _note = value;
+                          });
+                        },
+                      ),
+                      actions: [
+                        TextButton(onPressed: () {
+                          FirebaseFirestore.instance.collection(firebase.createcollection()).add({
+                            "notiz": null,
+                            "passwort": _pwd,
+                            "Erstellt am": DateTime.now()
+                          });
+                          Navigator.pop(context);
+                        }, child: const Text("Abbruch")),
+                        TextButton(onPressed: () {
+                          FirebaseFirestore.instance.collection(firebase.createcollection()).add({
+                            "notiz": _note,
+                            "passwort": _pwd,
+                            "Erstellt am": DateTime.now()
+                          });
+                          Navigator.pop(context);
+                        }, child: const Text("Speichern")),
+                      ],
+                    )
+                );
                 setState(() {
-                  //TODO: Speicher Passwort in der DB
+
                 });
               },
               child: const Text("Speichern"),
