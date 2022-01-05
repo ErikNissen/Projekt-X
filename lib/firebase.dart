@@ -73,7 +73,6 @@ String createcollection(){
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(50.0)
             )
-
         ),
         onChanged: (value) async {
           _password = _encpass(value);
@@ -93,8 +92,6 @@ String createcollection(){
           ),
           onPressed: () async {
             try {
-              //print(_email);
-              //print(_password);
               await _auth.signInWithEmailAndPassword(
                 email: _email,
                 password: _password
@@ -295,12 +292,12 @@ class _forgotpassword extends State<ForgotPassword>{
   }
 }
 
-
-
-
-/*
-* TODO: Datenbank einbindung
-* */
+/*****************************************************************
+ *
+ *                       Page 3
+ *      ListView mit Generierten & gespeicherten PW
+ *
+ *******************************************************************/
 
 class DatenbankView extends StatefulWidget {
   @override
