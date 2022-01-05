@@ -337,7 +337,7 @@ class _DatenbankViewState extends State<DatenbankView>{
                                   ),
                                   subtitle: Column(
                                     children: [
-                                      const Text("Passwort"),
+                                      const Text("Passwort: \n"),
                                       Text(doc["passwort"].toString()),
                                       ElevatedButton(
                                         child: const Icon(Icons.copy),
