@@ -320,38 +320,42 @@ class _DatenbankViewState extends State<DatenbankView>{
           builder: (context, snapshot){
             if(snapshot.hasData){
               final documents = snapshot.data!.docs;
+              documents.removeAt(0);
               return ListView(
                   children: documents
-                      .map((doc) => Card(
-                    child: ListTile(
-                      title: Column(
-                        children: [
-                          const Text("Titel"),
-                          Text("${doc["notiz"].toString()}\n"),
-                        ],
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                      ),
-                      subtitle: Column(
-                        children: [
-                          const Text("Passwort"),
-                          Text(doc["passwort"].toString()),
-                          ElevatedButton(
-                            child: const Icon(Icons.copy),
-                            onPressed: (){
-                              FlutterClipboard.copy(doc["passwort"].toString());
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text("Passwort kopiert")
-                                  )
+                      .map((doc) {
+                              return Card(
+                                child: ListTile(
+                                  title: Column(
+                                    children: [
+                                      const Text("Titel"),
+                                      Text("${doc["notiz"].toString()}\n"),
+                                    ],
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                  ),
+                                  subtitle: Column(
+                                    children: [
+                                      const Text("Passwort"),
+                                      Text(doc["passwort"].toString()),
+                                      ElevatedButton(
+                                        child: const Icon(Icons.copy),
+                                        onPressed: (){
+                                          FlutterClipboard.copy(doc["passwort"].toString());
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                              const SnackBar(
+                                                  content: Text("Passwort kopiert")
+                                              )
+                                          );
+                                        },
+                                      )
+                                    ],
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                  ),
+                                ),
                               );
-                            },
-                          )
-                        ],
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                      ),
-                    ),
-                  ))
-                      .toList());
+                        })
+                      .toList()
+              );
             }else if(snapshot.hasError){
               return const Text("Fehler");
             }else {
