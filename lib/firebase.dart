@@ -321,7 +321,11 @@ class _DatenbankViewState extends State<DatenbankView>{
             if(snapshot.hasData){
               final documents = snapshot.data!.docs;
               //TEST
-              documents.removeAt(0);
+              for(var i = 0; i < documents.length; i++){
+                if(documents[i]["passwort"].toString() == "null"){
+                  documents.removeAt(i);
+                }
+              }
               return ListView(
                   children: documents
                       .map((doc) {
