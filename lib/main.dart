@@ -3,6 +3,8 @@ import 'crypto.dart' as crypto;
 import 'firebase.dart' as firebase;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 List _pwd = [];
 bool _UC = true;
@@ -12,18 +14,63 @@ bool _sym = true;
 bool _erwASCII = false;
 bool _offlinemode = false;
 double _pwlen = 8;
+String _note = "";
 
 List<Color> colors = const [
-  Color(0xff800080),
-  Color(0xff8C008C),
-  Color(0xffCC00CC)
+  Color(0xff800080), //0
+  Color(0xff8C008C), //1
+  Color(0xffCC00CC), //2
+  Color(0xff00CC00), //3
+  Color(0xff00A600), //4
+  Color(0xff008000)  //5
 ];
 
 Future<void> main() async {
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.light(),
+      theme: ThemeData.light().copyWith(
+        buttonTheme: ButtonThemeData(
+          buttonColor: colors[4],
+          textTheme: ButtonTextTheme.primary,
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+              primary: colors[5]
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+            style: ElevatedButton.styleFrom(
+                primary: colors[4]
+            )
+        ),
+        sliderTheme: SliderThemeData(
+            thumbColor: colors[4],
+            activeTrackColor: colors[5],
+            inactiveTrackColor: colors[3]
+        ),
+        switchTheme: const SwitchThemeData().copyWith(
+            thumbColor: MaterialStateProperty.all(colors[4]),
+            trackColor: MaterialStateProperty.all(colors[3])
+        ),
+        appBarTheme: AppBarTheme(
+          color: colors[3],
+        ),
+        inputDecorationTheme: const InputDecorationTheme().copyWith(
+            enabledBorder: const OutlineInputBorder().copyWith(
+              borderSide: const BorderSide().copyWith(
+                  color: colors[4]
+              ),
+              borderRadius: BorderRadius.circular(50.0),
+            ),
+            focusedBorder: const OutlineInputBorder().copyWith(
+              borderSide: const BorderSide().copyWith(
+                  color: colors[5]
+              ),
+              borderRadius: BorderRadius.circular(50.0),
+            )
+        )
+      ),
       darkTheme: ThemeData.dark().copyWith(
         buttonTheme: ButtonThemeData(
           buttonColor: colors[1],
@@ -73,6 +120,7 @@ Future<void> main() async {
         '/': (context) => const firebase.LoginPage(),
         '/register': (context) => firebase.RegisterPage(),
         '/forgot': (context) => firebase.ForgotPassword(),
+        '/view': (context) => firebase.DatenbankView(),
         '/second': (context) => const SecondScreen(),
         '/third': (context) => const ThirdScreen(),
         '/settings': (context) => const Settings(),
@@ -163,7 +211,7 @@ class _secondscreen extends State<SecondScreen>{
               child: IconButton(
                 icon: const Icon(Icons.table_chart),
                 onPressed: (){
-                  Navigator.pushNamed(context, '/third');
+                  Navigator.pushNamed(context, '/view');
                 },
               ),
             ),
@@ -442,20 +490,71 @@ class _pwgen extends State<GenPwd> {
                       )
                   );
                 }else {
-                  _Loading();
-                  _pwd = await crypto.Gen_Password([_UC, _LC, _num, _sym, _erwASCII], _pwlen);
-                  setState(() {
-                    updatepwd();
-                  });
-                  _Loading();
+                  var error;
+                  try{
+                    var req = await http.get(Uri.parse("https://qrng.anu.edu.au"));
+                    error = req.statusCode;
+                  }catch (e){
+                    error = int.parse(e.toString().split("=").last.split(")")[0].toString());
+                  }
+                  if(error == 200){
+                    _Loading();
+                    _pwd = await crypto.Gen_Password([_UC, _LC, _num, _sym, _erwASCII], _pwlen);
+                    setState(() {
+                      updatepwd();
+                    });
+                    _Loading();
+                  }else{
+                    showDialog(
+                        context: context,
+                        builder: (ctx) => const AlertDialog(
+                          title: Text("Achtung"),
+                          content: Text('Es konnte keine Internetverbindung hergestellt werden.'),
+                        )
+                    );
+                  }
                 }
               },
               child: const Text("Generiere Passwort"),
             ),
             TextButton(
               onPressed: (){
+                showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                      title: const Text("Notiz"),
+                      content: TextField(
+                        decoration: const InputDecoration(
+                          hintText: "Wofür ist das Passwort?"
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                              _note = value;
+                          });
+                        },
+                      ),
+                      actions: [
+                        TextButton(onPressed: () {
+                          FirebaseFirestore.instance.collection(firebase.createcollection()).add({
+                            "notiz": null,
+                            "passwort": _pwd,
+                            "Erstellt am": DateTime.now()
+                          });
+                          Navigator.pop(context);
+                        }, child: const Text("Abbruch")),
+                        TextButton(onPressed: () {
+                          FirebaseFirestore.instance.collection(firebase.createcollection()).add({
+                            "notiz": _note,
+                            "passwort": _pwd,
+                            "Erstellt am": DateTime.now()
+                          });
+                          Navigator.pop(context);
+                        }, child: const Text("Speichern")),
+                      ],
+                    )
+                );
                 setState(() {
-                  //TODO: Speicher Passwort in der DB
+
                 });
               },
               child: const Text("Speichern"),
