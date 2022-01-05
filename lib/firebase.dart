@@ -326,14 +326,14 @@ class _DatenbankViewState extends State<DatenbankView>{
                     child: ListTile(
                       title: Column(
                         children: [
-                          Text("Titel"),
+                          const Text("Titel"),
                           Text("${doc["notiz"].toString()}\n"),
                         ],
                         crossAxisAlignment: CrossAxisAlignment.start,
                       ),
                       subtitle: Column(
                         children: [
-                          Text("Passwort"),
+                          const Text("Passwort"),
                           Text(doc["passwort"].toString()),
                           ElevatedButton(
                             child: const Icon(Icons.copy),
