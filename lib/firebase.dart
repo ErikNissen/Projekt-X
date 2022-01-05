@@ -1,13 +1,9 @@
 import 'dart:convert';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/services.dart';
-import 'package:http/http.dart';
 import 'package:crypto/crypto.dart';
-import 'main.dart' as main;
-import 'package:firebase_core/firebase_core.dart';
+import 'package:clipboard/clipboard.dart';
 
 final _auth = FirebaseAuth.instance;
 String _email = "";
@@ -16,16 +12,6 @@ String _password = "";
 String _encpass(String password) {
   var _bytes = utf8.encode(password);
   return sha512.convert(_bytes).toString();
-}
-
-Future<List> getData() async{
-  var _collection = await FirebaseFirestore.instance.collection(createcollection()).get();
-  var _docs = _collection.docs;
-  var _jdoc = [];
-  for(var i in _docs){
-    _jdoc.add(i.data());
-  }
-  return _jdoc;
 }
 
 String createcollection(){
@@ -120,8 +106,6 @@ String createcollection(){
                   "Erstellt am": null
                 });
               }
-              getData();
-
               Navigator.pushNamed(context, '/second');
             } on FirebaseAuthException catch (e){
               showDialog(
@@ -318,38 +302,62 @@ class _forgotpassword extends State<ForgotPassword>{
 * TODO: Datenbank einbindung
 * */
 
-class DatenbankView extends StatelessWidget {
-   getData() async{
-    var collection = await FirebaseFirestore.instance.collection(createcollection()).get();
-    var docs = collection.docs;
-    print(docs);
-  }
+class DatenbankView extends StatefulWidget {
+  @override
+  _DatenbankViewState createState() => _DatenbankViewState();
+}
+
+class _DatenbankViewState extends State<DatenbankView>{
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Center(
-          child: Column(
-            children: [
-              Row(
-                children: const [
-                  Text("Notiz"),
-                  Text("Passwort")
-                ],
-              ),
-              ListView.builder(
-                padding: const EdgeInsets.all(8.0),
-                itemExtent: 20.0,
-                itemBuilder: (BuildContext context, int index){
-                  return Row(
-                    children: const [
-                      Text("")
-                    ],
-                  );
-                },
-              )
-            ],
-          )
+        appBar: AppBar(
+          title: const Text("Passwörter"),
+        ),
+        body: StreamBuilder<QuerySnapshot>(
+          stream: FirebaseFirestore.instance.collection(createcollection()).snapshots(),
+          builder: (context, snapshot){
+            if(snapshot.hasData){
+              final documents = snapshot.data!.docs;
+              return ListView(
+                  children: documents
+                      .map((doc) => Card(
+                    child: ListTile(
+                      title: Column(
+                        children: [
+                          Text("Titel"),
+                          Text("${doc["notiz"].toString()}\n"),
+                        ],
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                      ),
+                      subtitle: Column(
+                        children: [
+                          Text("Passwort"),
+                          Text(doc["passwort"].toString()),
+                          ElevatedButton(
+                            child: const Icon(Icons.copy),
+                            onPressed: (){
+                              FlutterClipboard.copy(doc["passwort"].toString());
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text("Passwort kopiert")
+                                  )
+                              );
+                            },
+                          )
+                        ],
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                      ),
+                    ),
+                  ))
+                      .toList());
+            }else if(snapshot.hasError){
+              return const Text("Fehler");
+            }else {
+              return const Text("Keine Daten");
+            }
+          },
         ),
       ),
     );

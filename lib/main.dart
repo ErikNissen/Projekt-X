@@ -120,6 +120,7 @@ Future<void> main() async {
         '/': (context) => const firebase.LoginPage(),
         '/register': (context) => firebase.RegisterPage(),
         '/forgot': (context) => firebase.ForgotPassword(),
+        '/view': (context) => firebase.DatenbankView(),
         '/second': (context) => const SecondScreen(),
         '/third': (context) => const ThirdScreen(),
         '/settings': (context) => const Settings(),
@@ -210,7 +211,7 @@ class _secondscreen extends State<SecondScreen>{
               child: IconButton(
                 icon: const Icon(Icons.table_chart),
                 onPressed: (){
-                  Navigator.pushNamed(context, '/third');
+                  Navigator.pushNamed(context, '/view');
                 },
               ),
             ),
