@@ -546,6 +546,12 @@ class _pwgen extends State<GenPwd> {
                             "Erstellt am": DateTime.now()
                           });
                           Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Gespeichert."),
+                              duration: Duration(seconds: 2),
+                            )
+                          );
                         }, child: const Text("Speichern")),
                       ],
                     )

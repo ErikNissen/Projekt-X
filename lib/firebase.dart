@@ -315,7 +315,7 @@ class _DatenbankViewState extends State<DatenbankView>{
         body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance.collection(createcollection()).snapshots(),
           builder: (context, snapshot){
-            if(snapshot.hasData){
+            if(snapshot.hasData && snapshot.data!.size > 1){
               final documents = snapshot.data!.docs;
               //TEST
               for(var i = 0; i < documents.length; i++){
@@ -338,17 +338,64 @@ class _DatenbankViewState extends State<DatenbankView>{
                                   subtitle: Column(
                                     children: [
                                       const Text("Passwort: \n"),
-                                      Text(doc["passwort"].toString()),
-                                      ElevatedButton(
-                                        child: const Icon(Icons.copy),
-                                        onPressed: (){
-                                          FlutterClipboard.copy(doc["passwort"].toString());
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                              const SnackBar(
-                                                  content: Text("Passwort kopiert")
-                                              )
-                                          );
-                                        },
+                                      Text(doc["passwort"][0].toString()),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          ElevatedButton(
+                                            child: const Icon(Icons.copy),
+                                            onPressed: (){
+                                              FlutterClipboard.copy(doc["passwort"].toString());
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                  const SnackBar(
+                                                      content: Text("Passwort kopiert")
+                                                  )
+                                              );
+                                            },
+                                          ),
+                                          ElevatedButton(
+                                            style: ElevatedButton.styleFrom(
+                                              primary: Colors.redAccent,
+                                            ),
+                                            child: const Icon(Icons.delete),
+                                            onPressed: (){
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) => AlertDialog(
+                                                  title: const Text("Achtung"),
+                                                  content: const Text("Wollen Sie wirklich das Passwort löschen?"),
+                                                  actions: [
+                                                    ElevatedButton(
+                                                      child: const Icon(Icons.done),
+                                                      onPressed: () async{
+                                                        setState(() {
+                                                          var snaps = FirebaseFirestore.instance.collection(createcollection()).get();
+                                                          snaps.then((value){
+                                                            for(var x in value.docs){
+                                                              if(x.get("passwort").toString() == doc["passwort"].toString() && x.get("notiz").toString() == doc["notiz"].toString()){
+                                                                FirebaseFirestore.instance.collection(createcollection()).doc(x.id).delete();
+                                                              }
+                                                            }
+                                                          });
+                                                        });
+                                                        Navigator.pop(context);
+                                                        ScaffoldMessenger.of(context).showSnackBar(
+                                                            const SnackBar(
+                                                              content: Text("Passwort gelöscht."),
+                                                            )
+                                                        );
+                                                      },
+                                                    ),
+                                                    ElevatedButton(
+                                                        onPressed: () => Navigator.pop(context),
+                                                        child: const Icon(Icons.cancel)
+                                                    )
+                                                  ],
+                                                )
+                                              );
+                                            },
+                                          )
+                                        ],
                                       )
                                     ],
                                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -358,10 +405,14 @@ class _DatenbankViewState extends State<DatenbankView>{
                         })
                       .toList()
               );
-            }else if(snapshot.hasError){
-              return const Text("Fehler");
             }else {
-              return const Text("Keine Daten");
+              return ListView(
+                children: const [
+                  ListTile(
+                    title: Text("Keine Daten vorhanden."),
+                  )
+                ],
+              );
             }
           },
         ),
