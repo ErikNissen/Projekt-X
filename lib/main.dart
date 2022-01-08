@@ -114,15 +114,15 @@ Future<void> main() async {
         )
       ),
       themeMode: ThemeMode.dark,
-      title: "Flutter ProjektX",
+      title: "ProjektX Passwort Generator",
       initialRoute: '/',
       routes: {
         '/': (context) => const firebase.LoginPage(),
         '/register': (context) => firebase.RegisterPage(),
         '/forgot': (context) => firebase.ForgotPassword(),
-        '/view': (context) => firebase.DatenbankView(),
         '/second': (context) => const SecondScreen(),
         '/settings': (context) => const Settings(),
+        '/view': (context) => firebase.DatenbankView()
       },
     )
   );
@@ -135,51 +135,6 @@ Future<void> main() async {
  *                      Anmeldung
  *
  *******************************************************************/
-
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
-
-  @override
-  _homescreen createState() => _homescreen();
-}
-
-class _homescreen extends State<HomeScreen>{
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Home Screen',
-        ),
-      ),
-      body: Container(
-        padding: const EdgeInsets.all(20),
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.pushNamed(context, '/second');
-          },
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const Text(
-                  "Goto Second Screen",
-                ),
-
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/third');
-                  },
-                  child: const Text(
-                    'Goto Third Screen',
-                  ),
-                )
-              ]
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 /*****************************************************************
  *

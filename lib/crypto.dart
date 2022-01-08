@@ -10,26 +10,26 @@ String Qrand(int length){
   return "https://qrng.anu.edu.au/API/jsonI.php?length=$length&type=uint8";
 }
 
-Future<List> Gen_Password(List verbotene_symbole, double pwlen) async {
+Future<List> Gen_Password(List<bool> verbotene_symbole, double pwlen) async {
   //int entropy_R = 0;
   String versym = "";
-  if(verbotene_symbole[0] == false){
+  if(!verbotene_symbole[0]){
     versym = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     //entropy_R += versym.length;
   }
-  if(verbotene_symbole[1] == false){
+  if(!verbotene_symbole[1]){
     versym += "abcdefghijklmnopqrstuvwxyz";
     //entropy_R += versym.length;
   }
-  if(verbotene_symbole[2] == false){
+  if(!verbotene_symbole[2]){
     versym += "0123456789";
     //entropy_R += versym.length;
   }
-  if(verbotene_symbole[3] == false){
+  if(!verbotene_symbole[3]){
     versym += """!\\"§\$%&/()=?*'<>;,:.-_+#~@{[]}´`|°^""";
     //entropy_R += versym.length;
   }
-  if(verbotene_symbole[4] == false){
+  if(!verbotene_symbole[4]){
     versym += "€‚ƒ„…†‡ˆ‰Š‹ŒŽ‘’“”•–—˜™š›œžŸ¡¢£¤¥¦§¨©ª«¬®¯±²³µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ";
     //entropy_R += versym.length;
   }
