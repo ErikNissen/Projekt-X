@@ -24,7 +24,7 @@ sinnvollen Daten beinhalten.
 <details>
 <summary>✔AF1</summary>
 Die App besteht aus mind. drei unterschiedlichen Routen (entspricht Screens innerhalb der
-App), zwischen denen navigiert werden kann
+App), zwischen denen navigiert werden kann.
 </details>
 <details>
 <summary>✔AF2</summary>

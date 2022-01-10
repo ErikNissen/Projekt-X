@@ -23,7 +23,7 @@ String _note = "";
 List<Color> colors = const [
   // Dunkel
   Color(0xff800080), //0
-  Color(0xff8C008C), //1
+  Color(0xff8c008c), //1
   Color(0xffCC00CC), //2
   // Hell
   Color(0xff00CC00), //3
