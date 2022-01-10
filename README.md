@@ -22,12 +22,12 @@
 AF1 und AF2 sind erfüllt. Die Routen und die ListView/GridView müssen noch keine 
 sinnvollen Daten beinhalten.
 <details>
-<summary><h4>✔AF1</h4></summary>
+<summary>✔AF1</summary>
 Die App besteht aus mind. drei unterschiedlichen Routen (entspricht Screens innerhalb der
 App), zwischen denen navigiert werden kann
 </details>
 <details>
-<summary><h4>✔AF2</h4></summary>
+<summary>✔AF2</summary>
 Die App enthält mind. eine scrollbare ListView oder GridView.
 </details>
 </details>
@@ -37,12 +37,12 @@ Die App enthält mind. eine scrollbare ListView oder GridView.
 AF3 und AF4 sind erfüllt. Die App kann also Daten von einem Gerätesensor oder aus einer 
 öffentlichen API darstellen und den authentifizierten Anwender erkennen.
 <details>
-<summary><h4>✔AF3</h4></summary>
+<summary>✔AF3</summary>
 Die App bindet sinnvoll mind. einen Sensor des mobilen Geräts oder eine öffentliche API
 ein. Siehe unten, um Anregungen diesbezügl. zu erhalten.
 </details>
 <details>
-<summary><h4>✔AF4</h4></summary>
+<summary>✔AF4</summary>
 Die App unterstützt eine Authentifizierung der Anwender. Ob die Authentifizierung anonym,
 mittels E-Mail und Passwort und/oder über andere Dienste erfolgt, ist freigestellt. Es wird die
 Verwendung von Firebase empfohlen.
@@ -54,7 +54,7 @@ Verwendung von Firebase empfohlen.
 Es wird die finale Version der App präsentiert, die alle oben genannten Anforderungen AF1-
 5 erfüllt.
 <details>
-<summary><h4>✔AF5</h4></summary>
+<summary>✔AF5</summary>
 Die App speichert ausgewählte Daten auf einem Server in einer Datenbank und/oder einem
 Objekt-Storage. Es wird die Verwendung von Firebase empfohlen
 </details>
