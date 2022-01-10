@@ -70,6 +70,8 @@ Um die erstellten Passwörter sich anzuschauen, drückt man oben links in der Ec
 die man gespeichert hat samt Notizen. Die Passwörter kann man sich kopieren oder wenn man diese nicht mehr braucht löschen.
 </details>
 
+____
+____
 
 ## main.dart
 In dieser Datei befinden sich die Klassen, welche die Grundfunktionen der App beinhaltet.
