@@ -184,8 +184,8 @@ class _forgotpassword extends State<ForgotPassword>{
                   labelText: 'Email',
                   icon: Icon(
                     Icons.mail,
+                    focusedBorder: UnderlineInputBorder(
                   ),
-                  focusedBorder: UnderlineInputBorder(
                   ),
                   enabledBorder: UnderlineInputBorder(
                   ),
