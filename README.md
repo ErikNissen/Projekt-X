@@ -60,6 +60,19 @@ Objekt-Storage. Es wird die Verwendung von Firebase empfohlen
 </details>
 </details>
 
+
+<details>
+<summary><h3>Quickstart-Guide</h3></summary>
+Zuerst muss man sich registrieren, wenn man registriert ist oder schon ein Account hat, meldet man sich in der APP an.
+Man befindet sich dann schon im Passwort Generator, hier gibt man an wie lang das Password sein soll und welche Zeichen dieses beinhalten soll
+und klickt dann auf „Generiere Passwort", wenn einem das Passwort gefällt kann man es speichern und bei Bedarf eine Notiz dazu schreiben.
+Um die erstellten Passwörter sich anzuschauen, drückt man oben links in der Ecke (links neben dem Zahnrad) auf das Symbol und sieht dann alle Passwörter,
+die man gespeichert hat samt Notizen. Die Passwörter kann man sich kopieren oder wenn man diese nicht mehr braucht löschen.
+</details>
+
+____
+____
+
 ## main.dart
 In dieser Datei befinden sich die Klassen, welche die Grundfunktionen der App beinhaltet.
 

@@ -205,6 +205,7 @@ class pwlenSlider extends StatefulWidget{
   @override
   _pwlenSlider createState() => _pwlenSlider();
 }
+
 class _pwlenSlider extends State<pwlenSlider> {
 
   @override
@@ -242,6 +243,7 @@ class pwOptions extends StatefulWidget{
   @override
   _pwOptions createState() => _pwOptions();
 }
+
 class _pwOptions extends State<pwOptions> {
 
   @override
@@ -417,6 +419,7 @@ class GenPwd extends StatefulWidget{
   @override
   _pwgen createState() => _pwgen();
 }
+
 class _pwgen extends State<GenPwd> {
   bool _isLoading = false;
 
@@ -554,13 +557,14 @@ class UpdateText extends StatefulWidget {
 
   UpdateTextState createState() => UpdateTextState();
 }
+
 class UpdateTextState extends State<UpdateText> {
-  String _pw = "";
+  String _textHolder = "";
 
   changeText() {
 
     setState(() {
-      _pw = _pwd[0];
+      _textHolder = _pwd[0];
     });
   }
 
@@ -572,7 +576,7 @@ class UpdateTextState extends State<UpdateText> {
             children: <Widget>[
               Container(
                   padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-                  child: Text(_pw,
+                  child: Text(_textHolder,
                       style: const TextStyle(
                           fontSize: 21,
                       )
@@ -607,6 +611,7 @@ class Settings extends StatefulWidget {
   @override
   _Settings createState() => _Settings();
 }
+
 class _Settings extends State<Settings>{
   @override
   Widget build(BuildContext context) {
