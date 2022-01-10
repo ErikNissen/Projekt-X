@@ -1,32 +1,63 @@
-## Seite 1 – Anonymes Login (nur PW geschützt – ggf mit Gesichtserkennung oder Fingerabdruck)
-- benötigte Sensoren
-    - Gesichtserkennung (Kamera)
-    - Fingerabdruck (Fingerabdruck Sensor)
-
+## Seite 1 - Login
+– Email Login
+- Registrieren
+- Passwort zurücksetzen
 
 ## Seite 2 – Passwort Parameter Generator
 - API PW Generator
     - https://qrng.anu.edu.au/contact/api-documentation/
+- Slider für Parameter
+- Button für Passwortgenerator
+- Button zum speichern des Passwortes
 
-## Seite 3 – (Opional) Generierte Passwörter LOKAL speichern (ggf. mit Notizen wo für)
-
-- ListView
+## Seite 3 - ListView
+- Liste der Passwörter
+- Button zum kopieren eines Passwortes
+- Button zum löschen eines Passwortes
 
 ## Meilensteine 
 
-<details><summary><h3>✔M1</h3></summary>
+<details>
+<summary><h3>✔M1</h3></summary>
 AF1 und AF2 sind erfüllt. Die Routen und die ListView/GridView müssen noch keine 
-sinnvollen Daten beinhalten. 
+sinnvollen Daten beinhalten.
+<details>
+<summary><h4>✔AF1</h4></summary>
+Die App besteht aus mind. drei unterschiedlichen Routen (entspricht Screens innerhalb der
+App), zwischen denen navigiert werden kann
+</details>
+<details>
+<summary><h4>✔AF2</h4></summary>
+Die App enthält mind. eine scrollbare ListView oder GridView.
+</details>
 </details>
 
-<details><summary><h3>✔M2</h3></summary>
+<details>
+<summary><h3>✔M2</h3></summary>
 AF3 und AF4 sind erfüllt. Die App kann also Daten von einem Gerätesensor oder aus einer 
-öffentlichen API darstellen und den authentifizierten Anwender erkennen. 
+öffentlichen API darstellen und den authentifizierten Anwender erkennen.
+<details>
+<summary><h4>✔AF3</h4></summary>
+Die App bindet sinnvoll mind. einen Sensor des mobilen Geräts oder eine öffentliche API
+ein. Siehe unten, um Anregungen diesbezügl. zu erhalten.
+</details>
+<details>
+<summary><h4>✔AF4</h4></summary>
+Die App unterstützt eine Authentifizierung der Anwender. Ob die Authentifizierung anonym,
+mittels E-Mail und Passwort und/oder über andere Dienste erfolgt, ist freigestellt. Es wird die
+Verwendung von Firebase empfohlen.
+</details>
 </details>
 
-<details><summary><h3>M3</h3></summary>
+<details>
+<summary><h3>✔M3</h3></summary>
 Es wird die finale Version der App präsentiert, die alle oben genannten Anforderungen AF1-
 5 erfüllt.
+<details>
+<summary><h4>✔AF5</h4></summary>
+Die App speichert ausgewählte Daten auf einem Server in einer Datenbank und/oder einem
+Objekt-Storage. Es wird die Verwendung von Firebase empfohlen
+</details>
 </details>
 
 ## main.dart
