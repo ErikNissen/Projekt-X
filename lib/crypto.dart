@@ -4,12 +4,18 @@ import 'dart:convert';
 //import 'dart:math';
 import 'package:http/http.dart' as http;
 
+///Erstellt ein Link, welcher eine API eines Quantencomputers ansteuert.
+///
+/// Als Eingabe [length] wird eine Ganzzahl angenommen, die 1 >= [length] <= 1024 ist.
 String Qrand(int length){
   assert(length <= 1024 && length >= 1);
 
   return "https://qrng.anu.edu.au/API/jsonI.php?length=$length&type=uint8";
 }
 
+///Generiert ein auf echtes Zufallszahlen basiertes Passwort.
+///
+/// Als Eingabe muss die Liste [verbotene_symbole] 5 bool'sche Werte beinhalten sowie die Passwortlänge [pwlen] als double.
 Future<List> Gen_Password(List<bool> verbotene_symbole, double pwlen) async {
   //int entropy_R = 0;
   String versym = "";

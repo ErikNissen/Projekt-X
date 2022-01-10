@@ -16,10 +16,16 @@ bool _offlinemode = false;
 double _pwlen = 8;
 String _note = "";
 
+
+/*
+* Theme Farben
+* */
 List<Color> colors = const [
+  // Dunkel
   Color(0xff800080), //0
   Color(0xff8C008C), //1
   Color(0xffCC00CC), //2
+  // Hell
   Color(0xff00CC00), //3
   Color(0xff00A600), //4
   Color(0xff008000)  //5
@@ -29,6 +35,10 @@ Future<void> main() async {
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,
+
+      /*
+      * Light Theme Einstellungen
+      * */
       theme: ThemeData.light().copyWith(
         buttonTheme: ButtonThemeData(
           buttonColor: colors[4],
@@ -71,6 +81,10 @@ Future<void> main() async {
             )
         )
       ),
+
+      /*
+      * Dark Theme Einstellung
+      * */
       darkTheme: ThemeData.dark().copyWith(
         buttonTheme: ButtonThemeData(
           buttonColor: colors[1],
@@ -116,11 +130,14 @@ Future<void> main() async {
       themeMode: ThemeMode.dark,
       title: "ProjektX Passwort Generator",
       initialRoute: '/',
+      /*
+      * Appübersicht
+      * */
       routes: {
         '/': (context) => const firebase.LoginPage(),
         '/register': (context) => firebase.RegisterPage(),
         '/forgot': (context) => firebase.ForgotPassword(),
-        '/second': (context) => const SecondScreen(),
+        '/second': (context) => const GeneratorEinstellungen(),
         '/settings': (context) => const Settings(),
         '/view': (context) => firebase.DatenbankView()
       },
@@ -131,26 +148,18 @@ Future<void> main() async {
 
 /*****************************************************************
  *
- *                       Page 1
- *                      Anmeldung
- *
- *******************************************************************/
-
-/*****************************************************************
- *
  *                       Page 2
  *                   Random PW GEN
  *
  ******************************************************************/
 
-class SecondScreen extends StatefulWidget {
-  const SecondScreen({Key? key}) : super(key: key);
+class GeneratorEinstellungen extends StatefulWidget {
+  const GeneratorEinstellungen({Key? key}) : super(key: key);
 
   @override
-  _secondscreen createState() => _secondscreen();
+  _GeneratorEinstellungen createState() => _GeneratorEinstellungen();
 }
-
-class _secondscreen extends State<SecondScreen>{
+class _GeneratorEinstellungen extends State<GeneratorEinstellungen>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -196,7 +205,6 @@ class pwlenSlider extends StatefulWidget{
   @override
   _pwlenSlider createState() => _pwlenSlider();
 }
-
 class _pwlenSlider extends State<pwlenSlider> {
 
   @override
@@ -234,7 +242,6 @@ class pwOptions extends StatefulWidget{
   @override
   _pwOptions createState() => _pwOptions();
 }
-
 class _pwOptions extends State<pwOptions> {
 
   @override
@@ -410,7 +417,6 @@ class GenPwd extends StatefulWidget{
   @override
   _pwgen createState() => _pwgen();
 }
-
 class _pwgen extends State<GenPwd> {
   bool _isLoading = false;
 
@@ -548,14 +554,13 @@ class UpdateText extends StatefulWidget {
 
   UpdateTextState createState() => UpdateTextState();
 }
-
 class UpdateTextState extends State<UpdateText> {
-  String _textHolder = "";
+  String _pw = "";
 
   changeText() {
 
     setState(() {
-      _textHolder = _pwd[0];
+      _pw = _pwd[0];
     });
   }
 
@@ -567,7 +572,7 @@ class UpdateTextState extends State<UpdateText> {
             children: <Widget>[
               Container(
                   padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-                  child: Text(_textHolder,
+                  child: Text(_pw,
                       style: const TextStyle(
                           fontSize: 21,
                       )
@@ -602,7 +607,6 @@ class Settings extends StatefulWidget {
   @override
   _Settings createState() => _Settings();
 }
-
 class _Settings extends State<Settings>{
   @override
   Widget build(BuildContext context) {

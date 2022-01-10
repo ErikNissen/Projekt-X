@@ -9,23 +9,30 @@ final _auth = FirebaseAuth.instance;
 String _email = "";
 String _password = "";
 
+///Verschlüsselt ein Klartextpasswort mit dem SHA512 Algotithmus.
+///
+/// Als Eingabe wird ein String [password] benötigt.
+/// Die Ausgabe ist ein [SHA512_Hash] String.
 String _encpass(String password) {
   var _bytes = utf8.encode(password);
   return sha512.convert(_bytes).toString();
 }
 
+///Generiert ein String, um beispielsweise eine Collection in Firebase zu erstellen.
+///
+/// Als Ausgabe wird ein [MD5_Hash] generiet, welche als Eingabe die aktuelle [Email] sowie den SHA512-Hash des [Passwortes] des Nutzers verwendet.
 String createcollection(){
   var _bytes = utf8.encode(_email+_encpass(_password));
   return md5.convert(_bytes).toString();
 }
 
-/*Fertig*/class LoginPage extends StatefulWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
 }
-/*Fertig*/class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final logo = Padding(
@@ -153,12 +160,11 @@ String createcollection(){
   }
 }
 
-/*TODO: Style*/class ForgotPassword extends StatefulWidget {
+class ForgotPassword extends StatefulWidget {
   @override
   _forgotpassword createState() => _forgotpassword();
 
 }
-
 class _forgotpassword extends State<ForgotPassword>{
   @override
   Widget build(BuildContext context) {
@@ -216,11 +222,11 @@ class _forgotpassword extends State<ForgotPassword>{
   }
 }
 
-/*TODO: Style*/class RegisterPage extends StatefulWidget{
+class RegisterPage extends StatefulWidget{
   @override
   _RegisterPageState createState() => _RegisterPageState();
 }
-/*TODO: Style*/class _RegisterPageState extends State<RegisterPage>{
+class _RegisterPageState extends State<RegisterPage>{
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -303,7 +309,6 @@ class DatenbankView extends StatefulWidget {
   @override
   _DatenbankViewState createState() => _DatenbankViewState();
 }
-
 class _DatenbankViewState extends State<DatenbankView>{
   @override
   Widget build(BuildContext context) {
