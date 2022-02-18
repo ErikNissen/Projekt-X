@@ -1,3 +1,7 @@
+# Projekt-X - Passwortgenerator
+Dieses Softwareprojekt wurde erstellt im Rahmen des Moduls "Mobile Systeme", welches im Wintersemester 2021 / 2022 angeboten wurde in der Fachhochschule Kiel. Autoren des Softwareprojekts: Nico Johnsen und Erik Nissen.
+
+
 ## Seite 1 - Login
 – Email Login
 - Registrieren
