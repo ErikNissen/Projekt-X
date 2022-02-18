@@ -1,6 +1,14 @@
 # Projekt-X - Passwortgenerator
 Dieses Softwareprojekt wurde erstellt im Rahmen des Moduls "Mobile Systeme", welches im Wintersemester 2021 / 2022 angeboten wurde in der Fachhochschule Kiel. Autoren des Softwareprojekts: Nico Johnsen und Erik Nissen.
 
+# Funktionsweise der App
+Diese App generiert ein Passwort welches auf echte Zufallszahlen basiert. Diese Zufallszahlen werden über eine API abgerufen, welche mit einem Quantencomputer kommuniziert. Weitere Informationen sind weiter unten anzutreffen.
+
+# Hinweis
+```diff
+- Aufgrund der Anforderung werden die Passwörter in der Firebase Datenbank von Google abgespeichert. 
+- Daher ist diese App (aktuell) nicht sicher jedoch wird dies in näherer Zukunft sich ändern sobald dafür Zeit ist.
+```
 
 ## Seite 1 - Login
 – Email Login
